@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <%- include('./../css.ejs') %>
+</head>
+<body>
+<%- include('./../nav.ejs') %>
+
+<main class="app-page">
+    <div class="app-header">
+        <div>
+            <h1 class="app-title">Editar cliente</h1>
+            <p class="app-subtitle">Actualiza los datos del expediente del cliente.</p>
+        </div>
+        <a href="/clientes/lista" class="btn secondary">Volver a la lista</a>
+    </div>
+
+    <section class="panel">
+        <form action="/clientes/editar" method="POST">
+
+            <input type="hidden" name="idCliente" value="<%= cliente.idcliente %>">
+
+            <div class="form-grid">
+                <div>
+                    <label for="nombre">Nombre o Razon Social</label>
+                    <input type="text" name="nombre" id="nombre" value="<%= cliente.nombrerazonsocial %>" required>
+                </div>
+
+                <div>
+                    <label for="rfc">RFC</label>
+                    <input type="text" name="rfc" id="rfc" value="<%= cliente.rfc %>" required>
+                </div>
+
+                <div>
+                    <label for="correo">Correo electronico</label>
+                    <input type="email" name="correo" id="correo" value="<%= cliente.correoelectronico || '' %>">
+                </div>
+
+                <div>
+                    <label for="telefono">Telefono</label>
+                    <input type="text" name="telefono" id="telefono" value="<%= cliente.telefono || '' %>">
+                </div>
+
+                <div>
+                    <label for="tipoPersona">Tipo de persona</label>
+                    <select name="tipoPersona" id="tipoPersona">
+                        <option value="Fisica" <%= (cliente.tipocliente || '').toLowerCase() === 'fisica' ? 'selected' : '' %>>Persona Fisica</option>
+                        <option value="Moral"  <%= (cliente.tipocliente || '').toLowerCase() === 'moral'  ? 'selected' : '' %>>Persona Moral</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label>
+                        <input type="checkbox" name="esPep" value="true" <%= cliente.espep ? 'checked' : '' %>>
+                        Es Persona Expuesta Politicamente (PEP)
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn">Guardar cambios</button>
+                <a href="/clientes/documentos?id=<%= cliente.idcliente %>" class="btn secondary">Ver documentos</a>
+            </div>
+
+        </form>
+    </section>
+</main>
+</body>
+</html>

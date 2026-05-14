@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <%- include('../css') %>
+</head>
+<body>
+<%- include('../nav') %>
+
+<main class="app-page">
+    <div class="app-header">
+        <div>
+            <h1 class="app-title">Editar regla PLD</h1>
+            <p class="app-subtitle">Modifica los parametros de la regla de deteccion.</p>
+        </div>
+        <a href="/reglas/lista" class="btn secondary">Volver a la lista</a>
+    </div>
+
+    <section class="panel">
+        <form action="/reglas/editar" method="POST">
+
+            <input type="hidden" name="idregla" value="<%= regla.idregla %>">
+
+            <div class="form-grid">
+                <div>
+                    <label for="nombre">Nombre de la regla</label>
+                    <input type="text" name="nombre" id="nombre" value="<%= regla.nombre %>" required>
+                </div>
+
+                <div>
+                    <label for="tipo">Tipo de regla</label>
+                    <select name="tipo" id="tipo">
+                        <option value="Individual"  <%= regla.tipo === 'Individual'  ? 'selected' : '' %>>Individual</option>
+                        <option value="Acumulado"   <%= regla.tipo === 'Acumulado'   ? 'selected' : '' %>>Acumulado</option>
+                        <option value="Frecuencia"  <%= regla.tipo === 'Frecuencia'  ? 'selected' : '' %>>Frecuencia</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label for="umbral_monto">Umbral de monto (MXN)</label>
+                    <input type="number" name="umbral_monto" id="umbral_monto" min="0" step="1000"
+                           value="<%= regla.umbral_monto || '' %>">
+                </div>
+
+                <div>
+                    <label for="umbral_frecuencia">Umbral de frecuencia (num. de operaciones)</label>
+                    <input type="number" name="umbral_frecuencia" id="umbral_frecuencia" min="1"
+                           value="<%= regla.umbral_frecuencia || '' %>">
+                </div>
+
+                <div>
+                    <label for="activa">Estado</label>
+                    <select name="activa" id="activa">
+                        <option value="true"  <%= regla.activa ? 'selected' : '' %>>Activa</option>
+                        <option value="false" <%= !regla.activa ? 'selected' : '' %>>Inactiva</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn">Guardar cambios</button>
+            </div>
+
+        </form>
+    </section>
+</main>
+
+<%- include('../scripts') %>
+</body>
+</html>

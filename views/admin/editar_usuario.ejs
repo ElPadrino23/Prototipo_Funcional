@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <%- include('./../css.ejs') %>
+</head>
+<body>
+<%- include('./../nav.ejs') %>
+
+<main class="app-page">
+    <div class="app-header">
+        <div>
+            <h1 class="app-title">Editar usuario</h1>
+            <p class="app-subtitle">Modifica los datos del perfil de acceso.</p>
+        </div>
+        <a href="/admin/lista" class="btn secondary">Volver a la lista</a>
+    </div>
+
+    <section class="panel">
+        <form action="/admin/editar" method="POST">
+
+            <input type="hidden" name="idusuario" value="<%= usuario.idusuario %>">
+
+            <div class="form-grid">
+                <div>
+                    <label for="nombre">Nombre</label>
+                    <input type="text" name="nombre" id="nombre" value="<%= usuario.nombre || '' %>" required>
+                </div>
+
+                <div>
+                    <label for="apellido">Apellido</label>
+                    <input type="text" name="apellido" id="apellido" value="<%= usuario.apellido || '' %>">
+                </div>
+
+                <div>
+                    <label for="rol">Rol</label>
+                    <select name="rol" id="rol">
+                        <option value="Administrador"          <%= (usuario.rol || '') === 'Administrador'          ? 'selected' : '' %>>Administrador</option>
+                        <option value="Oficial de Cumplimiento" <%= (usuario.rol || '') === 'Oficial de Cumplimiento' ? 'selected' : '' %>>Oficial de Cumplimiento</option>
+                        <option value="Analista"               <%= (usuario.rol || '') === 'Analista'               ? 'selected' : '' %>>Analista</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn">Guardar cambios</button>
+            </div>
+
+        </form>
+    </section>
+</main>
+
+<%- include('./../scripts.ejs') %>
+</body>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <%- include('./../css.ejs') %>
+</head>
+<body>
+    <div class="container">
+
+        <h4><%= title %></h4>
+
+        <!-- regresar a la lista -->
+        <a href="/clientes/lista">Volver a la lista</a>
+
+        <br><br>
+
+        <!-- registrar nuevo cliente-->
+        <form action="/clientes/agregar" method="POST">
+
+            <div class="input-field">
+                <input type="text" name="nombre" id="nombre" required>
+                <label for="nombre">Nombre o Razon Social</label>
+            </div>
+
+            <div class="input-field">
+                <input type="text" name="rfc" id="rfc" required>
+                <label for="rfc">RFC</label>
+            </div>
+
+            <div class="input-field">
+                <input type="email" name="correo" id="correo">
+                <label for="correo">Correo electronico</label>
+            </div>
+
+            <div class="input-field">
+                <input type="text" name="telefono" id="telefono">
+                <label for="telefono">Telefono</label>
+            </div>
+
+            <!--fisico o moral-->
+            <p>Tipo de persona</p>
+            <select name="tipoPersona" class="browser-default">
+                <option value="Fisica">Persona Fisica</option>
+                <option value="Moral">Persona Moral</option>
+            </select>
+
+            <br><br>
+
+            <!-- PEP -->
+            <p>
+                <label>
+                    <input type="checkbox" name="esPep" value="true">
+                    <span>Es Persona Expuesta Politicamente (PEP)</span>
+                </label>
+            </p>
+
+            <br>
+
+            <button type="submit" class="btn">Guardar Cliente</button>
+
+        </form>
+
+    </div>
+    <%- include('./../scripts.ejs') %>
+</body>
+</html>

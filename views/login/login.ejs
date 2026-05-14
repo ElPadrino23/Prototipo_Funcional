@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <%- include('../css') %>
+</head>
+<body>
+<main class="login-screen">
+    <section class="login-hero">
+        <div class="login-kicker">CoreData Consulting</div>
+        <h1 class="login-title">Sistema de Gestion SOFOM</h1>
+
+        <div class="demo-block">
+            <span class="demo-title">Credenciales de acceso rapido</span>
+            <p><strong>Correo:</strong> <%= usuarioDemo.correo %></p>
+            <p><strong>Contrasena:</strong> <%= usuarioDemo.password %></p>
+        </div>
+    </section>
+
+    <section class="login-card">
+        <div class="login-card-header">
+            <div class="login-card-kicker">Inicio de sesion</div>
+            <div class="login-brand">SOFOM</div>
+            <p class="login-help">Ingrese sus credenciales para acceder al tablero.</p>
+        </div>
+
+        <% if (mensaje) { %>
+            <div class="feedback <%= mensaje.includes('ncorrectos') || mensaje.includes('conectar') ? 'error' : '' %>"><%= mensaje %></div>
+        <% } %>
+
+        <form action="/login" method="POST">
+            <div class="login-field">
+                <label for="correo">Correo electronico</label>
+                <input type="email" name="correo" id="correo" placeholder="usuario@sofom.mx" required>
+            </div>
+
+            <div class="login-field">
+                <label for="password">Contrasena</label>
+                <input type="password" name="password" id="password" placeholder="Ingrese su contrasena" required>
+            </div>
+
+            <div class="login-actions">
+                <button type="submit" class="btn">Iniciar sesion</button>
+                <button type="button" class="btn-flat" id="btnDemo">Usar datos de acceso rapido</button>
+            </div>
+        </form>
+    </section>
+</main>
+
+<script>
+    document.getElementById('btnDemo').addEventListener('click', function() {
+        document.getElementById('correo').value = '<%= usuarioDemo.correo %>';
+        document.getElementById('password').value = '<%= usuarioDemo.password %>';
+    });
+</script>
+</body>
+</html>

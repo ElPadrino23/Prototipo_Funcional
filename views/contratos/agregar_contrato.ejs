@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <%- include('./../css.ejs') %>
+</head>
+<body>
+<%- include('./../nav.ejs') %>
+
+<main class="app-page">
+    <div class="app-header">
+        <div>
+            <h1 class="app-title">Agregar contrato</h1>
+            <p class="app-subtitle">Vincula un contrato con su vigencia y saldo a un cliente.</p>
+        </div>
+        <a href="/contratos/lista" class="btn secondary">Volver a la lista</a>
+    </div>
+
+    <section class="panel">
+        <form action="/contratos/agregar" method="POST">
+
+            <div class="form-grid">
+                <div>
+                    <label for="idcliente">Cliente</label>
+                    <select name="idcliente" id="idcliente" required>
+                        <option value="">-- Selecciona un cliente --</option>
+                        <% clientes.forEach(function(c) { %>
+                            <option value="<%= c.idcliente %>"><%= c.nombrerazonsocial %></option>
+                        <% }); %>
+                    </select>
+                </div>
+
+                <div>
+                    <label for="producto">Producto</label>
+                    <select name="producto" id="producto">
+                        <option value="Credito">Credito</option>
+                        <option value="Factoraje">Factoraje</option>
+                        <option value="Prestamo">Prestamo</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label for="fechainicio">Fecha de inicio</label>
+                    <input type="date" name="fechainicio" id="fechainicio" required>
+                </div>
+
+                <div>
+                    <label for="vencimiento">Fecha de vencimiento</label>
+                    <input type="date" name="vencimiento" id="vencimiento" required>
+                </div>
+
+                <div>
+                    <label for="saldo">Saldo inicial (MXN)</label>
+                    <input type="number" name="saldo" id="saldo" min="0" step="0.01" required>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn">Guardar contrato</button>
+            </div>
+
+        </form>
+    </section>
+</main>
+
+<%- include('./../scripts.ejs') %>
+</body>
+</html>

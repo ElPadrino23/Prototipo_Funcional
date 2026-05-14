@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <%- include('./../css.ejs') %>
+</head>
+<body>
+<%- include('./../nav.ejs') %>
+
+<main class="app-page">
+    <div class="app-header">
+        <div>
+            <h1 class="app-title">Reportes internos</h1>
+            <p class="app-subtitle">Canal para reportar conductas sospechosas. Los reportes anonimos no revelan la identidad del reportante.</p>
+        </div>
+        <a href="/reportes-internos/agregar" class="btn">Nuevo reporte</a>
+    </div>
+
+    <% if (mensaje) { %>
+        <div class="feedback"><%= mensaje %></div>
+    <% } %>
+
+    <section class="panel">
+        <table class="striped responsive-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Descripcion</th>
+                    <th>Anonimo</th>
+                    <th>Estatus</th>
+                    <th>Responsable</th>
+                    <th>Fecha</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% if (reportes.length === 0) { %>
+                    <tr><td colspan="7" style="color:var(--muted)">Sin reportes internos.</td></tr>
+                <% } %>
+                <% reportes.forEach(function(r) { %>
+                    <tr>
+                        <td><%= r.id %></td>
+                        <td><%= r.descripcion %></td>
+                        <td><%= r.anonimo ? 'Si' : 'No' %></td>
+                        <td><span class="badge-soft badge-warn"><%= r.estatus %></span></td>
+                        <td><%= r.responsable || '—' %></td>
+                        <td><%= r.fecha || '—' %></td>
+                        <td>
+                            <% if (r.estatus !== 'Cerrado') { %>
+                            <form action="/reportes-internos/actualizar" method="POST" style="display:flex;gap:6px;">
+                                <input type="hidden" name="id" value="<%= r.id %>">
+                                <input type="text" name="responsable" placeholder="Responsable" value="<%= r.responsable || '' %>" style="border:1px solid var(--borde);border-radius:6px;padding:6px 10px;font-size:13px;width:130px;">
+                                <select name="estatus" style="border:1px solid var(--borde);border-radius:6px;padding:6px 8px;font-size:13px;">
+                                    <option value="Pendiente"   <%= r.estatus === 'Pendiente'   ? 'selected' : '' %>>Pendiente</option>
+                                    <option value="En revision" <%= r.estatus === 'En revision' ? 'selected' : '' %>>En revision</option>
+                                    <option value="Cerrado"     <%= r.estatus === 'Cerrado'     ? 'selected' : '' %>>Cerrado</option>
+                                </select>
+                                <button type="submit" class="btn-small btn">Guardar</button>
+                            </form>
+                            <% } %>
+                        </td>
+                    </tr>
+                <% }); %>
+            </tbody>
+        </table>
+    </section>
+</main>
+
+<%- include('./../scripts.ejs') %>
+</body>
+</html>

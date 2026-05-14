@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <%- include('./../css.ejs') %>
+</head>
+<body>
+<%- include('./../nav.ejs') %>
+
+<main class="app-page">
+    <div class="app-header">
+        <div>
+            <h1 class="app-title"><%= cliente.nombrerazonsocial %></h1>
+            <p class="app-subtitle">RFC: <%= cliente.rfc %> &nbsp;|&nbsp; Tipo: <%= cliente.tipocliente %></p>
+        </div>
+        <div style="display:flex;gap:8px;">
+            <a href="/clientes/editar?id=<%= cliente.idcliente %>" class="btn secondary">Editar</a>
+            <a href="/clientes/lista" class="btn secondary">Volver</a>
+        </div>
+    </div>
+
+    <!-- Pestanas -->
+    <nav class="tabs-lite" id="tabsNav">
+        <button class="tab-lite active" onclick="mostrarTab('datos')">Datos generales</button>
+        <button class="tab-lite" onclick="mostrarTab('documentos')">Documentos (<%= documentos.length %>)</button>
+        <button class="tab-lite" onclick="mostrarTab('operaciones')">Operaciones (<%= operaciones.length %>)</button>
+        <button class="tab-lite" onclick="mostrarTab('contratos')">Contratos (<%= contratos.length %>)</button>
+        <button class="tab-lite" onclick="mostrarTab('alertas')">Alertas (<%= alertas.length %>)</button>
+        <button class="tab-lite" onclick="mostrarTab('riesgo')">Perfil de riesgo</button>
+    </nav>
+
+    <!-- Tab: Datos generales -->
+    <section class="panel" id="tab-datos">
+        <h3 style="margin:0 0 16px;color:var(--azul-oscuro);font-size:16px;">Datos generales</h3>
+        <div class="form-grid">
+            <div><label>Nombre / Razon social</label><div class="readonly-field"><%= cliente.nombrerazonsocial || '—' %></div></div>
+            <div><label>RFC</label><div class="readonly-field"><%= cliente.rfc || '—' %></div></div>
+            <div><label>CURP</label><div class="readonly-field"><%= cliente.curp || '—' %></div></div>
+            <div><label>Tipo de persona</label><div class="readonly-field"><%= cliente.tipocliente || '—' %></div></div>
+            <div><label>Correo</label><div class="readonly-field"><%= cliente.correoelectronico || '—' %></div></div>
+            <div><label>Telefono</label><div class="readonly-field"><%= cliente.telefono || '—' %></div></div>
+            <div><label>Nacionalidad / Pais</label><div class="readonly-field"><%= cliente.pais || 'Mexico' %></div></div>
+            <div><label>Estatus PEP</label><div class="readonly-field"><%= cliente.espep ? 'Si — PEP' : 'No' %></div></div>
+        </div>
+
+        <h3 style="margin:20px 0 16px;color:var(--azul-oscuro);font-size:16px;">Domicilio</h3>
+        <div class="form-grid">
+            <div><label>Calle y numero</label><div class="readonly-field"><%= cliente.callenumero || '—' %></div></div>
+            <div><label>Colonia</label><div class="readonly-field"><%= cliente.colonia || '—' %></div></div>
+            <div><label>Ciudad</label><div class="readonly-field"><%= cliente.ciudad || '—' %></div></div>
+            <div><label>Estado</label><div class="readonly-field"><%= cliente.estado || '—' %></div></div>
+            <div><label>Codigo postal</label><div class="readonly-field"><%= cliente.codigopostal || '—' %></div></div>
+            <div><label>Tipo de domicilio</label><div class="readonly-field">Fiscal</div></div>
+        </div>
+    </section>
+
+    <!-- Tab: Documentos -->
+    <section class="panel" id="tab-documentos" style="display:none;">
+        <h3 style="margin:0 0 16px;color:var(--azul-oscuro);font-size:16px;">Documentos</h3>
+        <table class="striped responsive-table">
+            <thead>
+                <tr>
+                    <th>ID</th><th>Tipo de documento</th><th>Nombre del archivo</th>
+                    <th>Estatus</th><th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% if (documentos.length === 0) { %>
+                    <tr><td colspan="5" style="color:var(--muted)">Sin documentos cargados</td></tr>
+                <% } %>
+                <% documentos.forEach(function(d) { %>
+                    <tr>
+                        <td><%= d.iddocumentocliente %></td>
+                        <td><%= d.tipodocumento %></td>
+                        <td><%= d.nombrearchivo %></td>
+                        <td>
+                            <% var est = d.estadovalidacion || 'Pendiente'; %>
+                            <span class="badge-soft <%= est === 'Validado' ? 'badge-ok' : (est === 'Rechazado' ? 'badge-danger' : 'badge-warn') %>"><%= est %></span>
+                        </td>
+                        <td>
+                            <% if (est !== 'Validado') { %>
+                                <form action="/clientes/validar-documento" method="POST" style="display:inline;">
+                                    <input type="hidden" name="idDocumento" value="<%= d.iddocumentocliente %>">
+                                    <input type="hidden" name="estado" value="Validado">
+                                    <button type="submit" class="btn-small btn">Validar</button>
+                                </form>
+                            <% } %>
+                            <% if (est !== 'Rechazado') { %>
+                                <form action="/clientes/validar-documento" method="POST" style="display:inline;">
+                                    <input type="hidden" name="idDocumento" value="<%= d.iddocumentocliente %>">
+                                    <input type="hidden" name="estado" value="Rechazado">
+                                    <button type="submit" class="btn-small btn" style="background:var(--rojo);">Rechazar</button>
+                                </form>
+                            <% } %>
+                        </td>
+                    </tr>
+                <% }); %>
+            </tbody>
+        </table>
+    </section>
+
+    <!-- Tab: Operaciones -->
+    <section class="panel" id="tab-operaciones" style="display:none;">
+        <h3 style="margin:0 0 16px;color:var(--azul-oscuro);font-size:16px;">Operaciones</h3>
+        <table class="striped responsive-table">
+            <thead>
+                <tr><th>ID</th><th>Producto</th><th>Tipo</th><th>Monto</th><th>Moneda</th><th>Fecha</th><th>Estatus</th></tr>
+            </thead>
+            <tbody>
+                <% if (operaciones.length === 0) { %>
+                    <tr><td colspan="7" style="color:var(--muted)">Sin operaciones registradas</td></tr>
+                <% } %>
+                <% operaciones.forEach(function(o) { %>
+                    <tr>
+                        <td><%= o.idoperacion %></td>
+                        <td><%= o.producto || '—' %></td>
+                        <td><%= o.tipooperacion || '—' %></td>
+                        <td>$<%= Number(o.monto || 0).toLocaleString('es-MX') %></td>
+                        <td><%= o.moneda || 'MXN' %></td>
+                        <td><%= o.fecha || '—' %></td>
+                        <td><span class="badge-soft badge-warn"><%= o.estatus || '—' %></span></td>
+                    </tr>
+                <% }); %>
+            </tbody>
+        </table>
+    </section>
+
+    <!-- Tab: Contratos -->
+    <section class="panel" id="tab-contratos" style="display:none;">
+        <h3 style="margin:0 0 16px;color:var(--azul-oscuro);font-size:16px;">Contratos</h3>
+        <table class="striped responsive-table">
+            <thead>
+                <tr><th>ID</th><th>Producto</th><th>Inicio</th><th>Vencimiento</th><th>Saldo</th><th>Estatus</th></tr>
+            </thead>
+            <tbody>
+                <% if (contratos.length === 0) { %>
+                    <tr><td colspan="6" style="color:var(--muted)">Sin contratos registrados</td></tr>
+                <% } %>
+                <% contratos.forEach(function(c) { %>
+                    <tr>
+                        <td><%= c.idcontrato %></td>
+                        <td><%= c.producto || '—' %></td>
+                        <td><%= c.fechainicio || '—' %></td>
+                        <td><%= c.vencimiento || '—' %></td>
+                        <td>$<%= Number(c.saldo || 0).toLocaleString('es-MX') %></td>
+                        <td><span class="badge-soft badge-ok"><%= c.estatus || '—' %></span></td>
+                    </tr>
+                <% }); %>
+            </tbody>
+        </table>
+    </section>
+
+    <!-- Tab: Alertas -->
+    <section class="panel" id="tab-alertas" style="display:none;">
+        <h3 style="margin:0 0 16px;color:var(--azul-oscuro);font-size:16px;">Alertas</h3>
+        <table class="striped responsive-table">
+            <thead>
+                <tr><th>ID</th><th>Regla</th><th>Nivel</th><th>Estatus</th><th>Fecha</th></tr>
+            </thead>
+            <tbody>
+                <% if (alertas.length === 0) { %>
+                    <tr><td colspan="5" style="color:var(--muted)">Sin alertas generadas</td></tr>
+                <% } %>
+                <% alertas.forEach(function(a) { %>
+                    <tr>
+                        <td><%= a.idalerta %></td>
+                        <td><%= a.regla || ('Op #' + a.idoperacion) %></td>
+                        <td><span class="badge-soft <%= a.nivel === 'Alto' ? 'badge-danger' : 'badge-warn' %>"><%= a.nivel %></span></td>
+                        <td><span class="badge-soft <%= a.estatus === 'Resuelta' ? 'badge-ok' : 'badge-warn' %>"><%= a.estatus %></span></td>
+                        <td><%= a.fecha || '—' %></td>
+                    </tr>
+                <% }); %>
+            </tbody>
+        </table>
+    </section>
+
+    <!-- Tab: Perfil de riesgo -->
+    <section class="panel" id="tab-riesgo" style="display:none;">
+        <h3 style="margin:0 0 16px;color:var(--azul-oscuro);font-size:16px;">Perfil de riesgo</h3>
+        <div class="form-grid">
+            <div><label>Nivel de riesgo</label>
+                <div class="readonly-field">
+                    <% var nv = cliente.nivelriesgo || 'Bajo'; %>
+                    <span class="badge-soft <%= nv === 'Alto' ? 'badge-danger' : (nv === 'Medio' ? 'badge-warn' : 'badge-ok') %>"><%= nv %></span>
+                </div>
+            </div>
+            <div><label>Estatus PEP</label>
+                <div class="readonly-field">
+                    <% if (cliente.espep) { %><span class="badge-soft badge-danger">PEP</span><% } else { %>No<% } %>
+                </div>
+            </div>
+            <div><label>Limite operativo autorizado</label>
+                <div class="readonly-field">$<%= Number(cliente.limiteoperativoautorizado || 0).toLocaleString('es-MX') %> MXN</div>
+            </div>
+            <div><label>Estatus del cliente</label>
+                <div class="readonly-field"><%= cliente.estatuscliente || '—' %></div>
+            </div>
+        </div>
+        <% if (cliente.observaciones) { %>
+            <div style="margin-top:16px;">
+                <label style="display:block;margin-bottom:7px;color:var(--azul-oscuro);font-size:13px;font-weight:600;">Observaciones</label>
+                <div class="readonly-field" style="min-height:60px;align-items:flex-start;padding-top:10px;"><%= cliente.observaciones %></div>
+            </div>
+        <% } %>
+    </section>
+</main>
+
+<%- include('./../scripts.ejs') %>
+<script>
+    function mostrarTab(nombre) {
+        var tabs = ['datos', 'documentos', 'operaciones', 'contratos', 'alertas', 'riesgo'];
+        tabs.forEach(function(t) {
+            document.getElementById('tab-' + t).style.display = t === nombre ? '' : 'none';
+        });
+        document.querySelectorAll('.tab-lite').forEach(function(btn, i) {
+            btn.classList.toggle('active', tabs[i] === nombre);
+        });
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <%- include('../css') %>
+</head>
+<body>
+<%- include('../nav') %>
+
+<main class="app-page">
+    <div class="app-header">
+        <div>
+            <h1 class="app-title">Reglas PLD</h1>
+            <p class="app-subtitle">Configuracion de umbrales y criterios de deteccion de operaciones inusuales.</p>
+        </div>
+        <a href="/reglas/agregar" class="btn">Agregar regla</a>
+    </div>
+
+    <% if (mensaje) { %>
+        <div class="feedback"><%= mensaje %></div>
+    <% } %>
+
+    <section class="panel">
+        <table class="striped responsive-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Tipo</th>
+                    <th>Umbral Monto (MXN)</th>
+                    <th>Umbral Frecuencia</th>
+                    <th>Activa</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% if (reglas.length === 0) { %>
+                    <tr><td colspan="7" style="color: var(--muted);">No hay reglas configuradas.</td></tr>
+                <% } %>
+                <% reglas.forEach(function(r) { %>
+                    <tr>
+                        <td><%= r.idregla %></td>
+                        <td><%= r.nombre %></td>
+                        <td><%= r.tipo %></td>
+                        <td><%= r.umbral_monto ? '$' + Number(r.umbral_monto).toLocaleString('es-MX') : '—' %></td>
+                        <td><%= r.umbral_frecuencia ? r.umbral_frecuencia + ' ops' : '—' %></td>
+                        <td>
+                            <% if (r.activa) { %>
+                                <span class="badge-soft badge-ok">Activa</span>
+                            <% } else { %>
+                                <span class="badge-soft badge-warn">Inactiva</span>
+                            <% } %>
+                        </td>
+                        <td>
+                            <a href="/reglas/editar?id=<%= r.idregla %>" class="btn-small btn">Editar</a>
+                            <form action="/reglas/eliminar" method="POST" style="display:inline;">
+                                <input type="hidden" name="idregla" value="<%= r.idregla %>">
+                                <button type="submit" class="btn-small btn" style="background:var(--rojo);">Eliminar</button>
+                            </form>
+                        </td>
+                    </tr>
+                <% }); %>
+            </tbody>
+        </table>
+    </section>
+</main>
+
+<%- include('../scripts') %>
+</body>
+</html>

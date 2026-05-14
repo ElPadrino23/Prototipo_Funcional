@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <%- include('./../css.ejs') %>
+</head>
+<body>
+<%- include('./../nav.ejs') %>
+
+<main class="app-page">
+    <div class="app-header">
+        <div>
+            <h1 class="app-title">Administracion de usuarios</h1>
+            <p class="app-subtitle">Control inicial de perfiles que operan clientes, alertas y reportes.</p>
+        </div>
+        <div style="display:flex;gap:8px;">
+            <a href="/admin/pep" class="btn secondary">Lista PEP</a>
+            <a href="/admin/agregar" class="btn">Agregar usuario</a>
+        </div>
+    </div>
+
+    <% if (typeof mensaje !== 'undefined' && mensaje) { %>
+        <div class="feedback"><%= mensaje %></div>
+    <% } %>
+
+    <section class="panel">
+        <table class="striped responsive-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Correo</th>
+                    <th>Rol</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody id="usuariosBody">
+                <tr>
+                    <td colspan="5">Cargando usuarios...</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+</main>
+
+<script src="/js/db-ajax.js"></script>
+<script>
+    window.addEventListener('load', function() {
+        cargarUsuarios();
+    });
+</script>
+</body>
+</html>

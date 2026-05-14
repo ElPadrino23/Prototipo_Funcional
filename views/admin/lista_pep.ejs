@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <%- include('./../css.ejs') %>
+</head>
+<body>
+<%- include('./../nav.ejs') %>
+
+<main class="app-page">
+    <div class="app-header">
+        <div>
+            <h1 class="app-title">Lista PEP / Riesgo</h1>
+            <p class="app-subtitle">Personas Politicamente Expuestas y listas de riesgo para contraste automatico al registrar clientes.</p>
+        </div>
+        <a href="/admin/lista" class="btn secondary">Volver a usuarios</a>
+    </div>
+
+    <% if (mensaje) { %>
+        <div class="feedback"><%= mensaje %></div>
+    <% } %>
+
+    <!-- Agregar entrada -->
+    <section class="panel" style="margin-bottom:18px;">
+        <h3 style="margin:0 0 14px;color:var(--azul-oscuro);font-size:16px;">Agregar entrada</h3>
+        <form action="/admin/pep/agregar" method="POST" style="display:flex;gap:12px;align-items:flex-end;flex-wrap:wrap;">
+            <div>
+                <label style="display:block;margin-bottom:6px;color:var(--azul-oscuro);font-size:13px;font-weight:600;">Nombre</label>
+                <input type="text" name="nombre" required style="border:1px solid var(--borde);border-radius:6px;padding:8px 12px;min-height:42px;min-width:220px;">
+            </div>
+            <div>
+                <label style="display:block;margin-bottom:6px;color:var(--azul-oscuro);font-size:13px;font-weight:600;">RFC</label>
+                <input type="text" name="rfc" style="border:1px solid var(--borde);border-radius:6px;padding:8px 12px;min-height:42px;width:160px;">
+            </div>
+            <div>
+                <label style="display:block;margin-bottom:6px;color:var(--azul-oscuro);font-size:13px;font-weight:600;">Tipo de lista</label>
+                <select name="tipo_lista" style="border:1px solid var(--borde);border-radius:6px;padding:8px 12px;min-height:42px;">
+                    <option value="PEP">PEP</option>
+                    <option value="Sancion">Sancion</option>
+                    <option value="Riesgo">Riesgo</option>
+                </select>
+            </div>
+            <button type="submit" class="btn">Agregar</button>
+        </form>
+    </section>
+
+    <!-- Lista -->
+    <section class="panel">
+        <table class="striped responsive-table">
+            <thead>
+                <tr><th>ID</th><th>Nombre</th><th>RFC</th><th>Tipo de lista</th><th>Fecha inclusion</th><th>Acciones</th></tr>
+            </thead>
+            <tbody>
+                <% if (lista.length === 0) { %>
+                    <tr><td colspan="6" style="color:var(--muted)">La lista esta vacia.</td></tr>
+                <% } %>
+                <% lista.forEach(function(p) { %>
+                    <tr>
+                        <td><%= p.id %></td>
+                        <td><%= p.nombre %></td>
+                        <td><%= p.rfc || '—' %></td>
+                        <td><span class="badge-soft badge-danger"><%= p.tipo_lista %></span></td>
+                        <td><%= p.fecha_inclusion || '—' %></td>
+                        <td>
+                            <form action="/admin/pep/eliminar" method="POST" style="display:inline;">
+                                <input type="hidden" name="id" value="<%= p.id %>">
+                                <button type="submit" class="btn-small btn" style="background:var(--rojo);">Eliminar</button>
+                            </form>
+                        </td>
+                    </tr>
+                <% }); %>
+            </tbody>
+        </table>
+    </section>
+</main>
+
+<%- include('./../scripts.ejs') %>
+</body>
+</html>

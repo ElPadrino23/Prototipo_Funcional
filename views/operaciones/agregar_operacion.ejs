@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <%- include('./../css.ejs') %>
+</head>
+<body>
+    <div class="container">
+
+        <h4><%= title %></h4>
+
+        <!-- regresar -->
+        <a href="/operaciones/lista">Volver a la lista</a>
+
+        <br><br>
+
+        <!-- registrar operacion -->
+        <form action="/operaciones/agregar" method="POST">
+
+            <!-- seleccionar cliente -->
+            <p>Cliente</p>
+            <select name="idCliente" class="browser-default" required>
+                <option value="">-- Seleccionar cliente --</option>
+                <% clientes.forEach(function(cliente) { %>
+                    <option value="<%= cliente.idCliente %>"><%= cliente.nombre %></option>
+                <% }); %>
+            </select>
+
+            <br><br>
+
+            <!-- deposito, retiro o pago si se enecsita agregar otra agregar en el mismo formato -->
+            <p>Tipo de operacion</p>
+            <select name="tipoOperacion" class="browser-default" required>
+                <option value="Deposito">Deposito</option>
+                <option value="Retiro">Retiro</option>
+                <option value="Pago">Pago</option>
+            </select>
+
+            <br><br>
+
+            <div class="input-field">
+                <input type="number" name="monto" id="monto" min="1" required>
+                <label for="monto">Monto (MXN)</label>
+            </div>
+
+            <div class="input-field">
+                <input type="date" name="fecha" id="fecha" required>
+                <label class="active" for="fecha">Fecha</label>
+            </div>
+
+            <div class="input-field">
+                <input type="text" name="descripcion" id="descripcion">
+                <label for="descripcion">Descripcion</label>
+            </div>
+
+            <button type="submit" class="btn">Registrar Operacion</button>
+
+        </form>
+
+    </div>
+    <%- include('./../scripts.ejs') %>
+</body>
+</html>

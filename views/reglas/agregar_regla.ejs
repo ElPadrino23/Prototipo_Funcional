@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <%- include('../css') %>
+</head>
+<body>
+<%- include('../nav') %>
+
+<main class="app-page">
+    <div class="app-header">
+        <div>
+            <h1 class="app-title">Agregar regla PLD</h1>
+            <p class="app-subtitle">Define un nuevo criterio de deteccion de operaciones inusuales.</p>
+        </div>
+        <a href="/reglas/lista" class="btn secondary">Volver a la lista</a>
+    </div>
+
+    <section class="panel">
+        <form action="/reglas/agregar" method="POST">
+
+            <div class="form-grid">
+                <div>
+                    <label for="nombre">Nombre de la regla</label>
+                    <input type="text" name="nombre" id="nombre" required>
+                </div>
+
+                <div>
+                    <label for="tipo">Tipo de regla</label>
+                    <select name="tipo" id="tipo">
+                        <option value="Individual">Individual</option>
+                        <option value="Acumulado">Acumulado</option>
+                        <option value="Frecuencia">Frecuencia</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label for="umbral_monto">Umbral de monto (MXN)</label>
+                    <input type="number" name="umbral_monto" id="umbral_monto" min="0" step="1000" placeholder="Ej. 600000">
+                </div>
+
+                <div>
+                    <label for="umbral_frecuencia">Umbral de frecuencia (num. de operaciones)</label>
+                    <input type="number" name="umbral_frecuencia" id="umbral_frecuencia" min="1" placeholder="Ej. 5">
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn">Guardar regla</button>
+            </div>
+
+        </form>
+    </section>
+</main>
+
+<%- include('../scripts') %>
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <%- include('./../css.ejs') %>
+</head>
+<body>
+<%- include('./../nav.ejs') %>
+
+<main class="app-page">
+    <div class="app-header">
+        <div>
+            <h1 class="app-title">Nuevo reporte interno</h1>
+            <p class="app-subtitle">Reporta una conducta sospechosa. Puedes hacerlo de forma anonima.</p>
+        </div>
+        <a href="/reportes-internos/lista" class="btn secondary">Volver</a>
+    </div>
+
+    <section class="panel">
+        <form action="/reportes-internos/agregar" method="POST">
+
+            <div style="margin-bottom:16px;">
+                <label style="display:block;margin-bottom:7px;color:var(--azul-oscuro);font-size:13px;font-weight:600;">Descripcion de la conducta sospechosa</label>
+                <textarea name="descripcion" rows="5" required style="width:100%;border:1px solid var(--borde);border-radius:6px;padding:10px 12px;resize:vertical;font-size:14px;"></textarea>
+            </div>
+
+            <div style="margin-bottom:16px;">
+                <label>
+                    <input type="checkbox" name="anonimo" value="true">
+                    Enviar de forma anonima
+                </label>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn">Enviar reporte</button>
+            </div>
+
+        </form>
+    </section>
+</main>
+
+<%- include('./../scripts.ejs') %>
+</body>
+</html>

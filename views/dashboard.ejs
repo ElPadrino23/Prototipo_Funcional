@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <%- include('css') %>
+</head>
+<body>
+<%- include('nav') %>
+
+<main class="app-page">
+    <div class="app-header">
+        <div>
+            <h1 class="app-title">Dashboard</h1>
+            <p class="app-subtitle">Resumen operativo para seguimiento de clientes, operaciones y alertas PLD.</p>
+        </div>
+    </div>
+
+    <section class="stats-grid">
+        <div class="stat">
+            <span>Clientes activos</span>
+            <strong id="totalClientes">...</strong>
+        </div>
+        <div class="stat">
+            <span>Operaciones del mes</span>
+            <strong id="totalOperaciones">...</strong>
+        </div>
+        <div class="stat">
+            <span>Alertas pendientes</span>
+            <strong id="totalAlertasPendientes">...</strong>
+        </div>
+        <div class="stat">
+            <span>Reportes listos</span>
+            <strong id="totalReportesListos">...</strong>
+        </div>
+    </section>
+
+    <!-- Alertas recientes y distribucion de riesgo -->
+    <div style="display:grid;grid-template-columns:1fr 280px;gap:18px;margin-bottom:18px;">
+        <section class="panel">
+            <h3 style="margin:0 0 12px;color:var(--azul-oscuro);font-size:16px;">Alertas recientes</h3>
+            <ul id="alertasRecientesList" style="list-style:none;margin:0;padding:0;">
+                <li style="color:var(--muted)">Cargando...</li>
+            </ul>
+            <a href="/alertas/lista" style="display:block;margin-top:12px;font-size:13px;color:var(--azul-principal);">Ver todas las alertas</a>
+        </section>
+
+        <section class="panel">
+            <h3 style="margin:0 0 12px;color:var(--azul-oscuro);font-size:16px;">Distribucion de riesgo</h3>
+            <table class="striped responsive-table">
+                <thead>
+                    <tr><th>Nivel</th><th>Clientes</th></tr>
+                </thead>
+                <tbody id="riesgoBody">
+                    <tr><td colspan="2" style="color:var(--muted)">Cargando...</td></tr>
+                </tbody>
+            </table>
+        </section>
+    </div>
+
+    <!-- Tabla de clientes -->
+    <section class="panel" style="margin-bottom:18px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+            <h3 style="margin:0;color:var(--azul-oscuro);font-size:16px;">Clientes</h3>
+            <a href="/clientes/lista" style="font-size:13px;color:var(--azul-principal);">Ver todos</a>
+        </div>
+        <table class="striped responsive-table">
+            <thead>
+                <tr>
+                    <th>ID</th><th>Nombre</th><th>RFC</th><th>Tipo</th>
+                    <th>Riesgo</th><th>PEP</th><th>Documentos</th>
+                </tr>
+            </thead>
+            <tbody id="clientesBody">
+                <tr><td colspan="7" style="color:var(--muted)">Cargando...</td></tr>
+            </tbody>
+        </table>
+    </section>
+
+    <section class="module-grid" aria-label="Modulos principales">
+        <a href="/clientes/lista" class="module-link">
+            <strong>Clientes</strong>
+            <span>Consultar expedientes, riesgo, PEP y documentos.</span>
+        </a>
+        <a href="/operaciones/lista" class="module-link">
+            <strong>Operaciones</strong>
+            <span>Registrar movimientos y revisar estatus.</span>
+        </a>
+        <a href="/alertas/lista" class="module-link">
+            <strong>Alertas</strong>
+            <span>Priorizar pendientes y documentar resoluciones.</span>
+        </a>
+        <a href="/contratos/lista" class="module-link">
+            <strong>Contratos</strong>
+            <span>Consultar vigencia, saldos y productos.</span>
+        </a>
+        <a href="/reportes/lista" class="module-link">
+            <strong>Reportes</strong>
+            <span>Preparar vistas previas para seguimiento regulatorio.</span>
+        </a>
+        <a href="/admin/lista" class="module-link">
+            <strong>Administracion</strong>
+            <span>Gestion de usuarios y perfiles del sistema.</span>
+        </a>
+        <a href="/reglas/lista" class="module-link">
+            <strong>Reglas PLD</strong>
+            <span>Configurar umbrales y criterios de deteccion.</span>
+        </a>
+        <a href="/historial/lista" class="module-link">
+            <strong>Historial</strong>
+            <span>Registro de eventos y cambios en el sistema.</span>
+        </a>
+        <a href="/reportes-internos/lista" class="module-link">
+            <strong>Reportes internos</strong>
+            <span>Reportar conductas sospechosas, con opcion de anonimato.</span>
+        </a>
+    </section>
+</main>
+
+<script src="/js/db-ajax.js"></script>
+<script>
+    window.addEventListener('load', function() {
+        cargarDashboard();
+        cargarClientes();
+    });
+</script>
+</body>
+</html>

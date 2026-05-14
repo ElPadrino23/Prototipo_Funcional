@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <%- include('./../css.ejs') %>
+</head>
+<body>
+<%- include('./../nav.ejs') %>
+
+<main class="app-page">
+    <div class="app-header">
+        <div>
+            <h1 class="app-title">Reportes</h1>
+            <p class="app-subtitle">Seguimiento de reportes regulatorios y cumplimiento PLD.</p>
+        </div>
+    </div>
+
+    <% if (typeof mensaje !== 'undefined' && mensaje) { %>
+        <div class="feedback"><%= mensaje %></div>
+    <% } %>
+
+    <!-- Formulario de generacion -->
+    <section class="panel" style="margin-bottom:18px;">
+        <h3 style="margin:0 0 14px;color:var(--azul-oscuro);font-size:16px;">Generar nuevo reporte</h3>
+        <form action="/reportes/generar" method="POST" style="display:flex;gap:12px;align-items:flex-end;flex-wrap:wrap;">
+            <div>
+                <label style="display:block;margin-bottom:6px;color:var(--azul-oscuro);font-size:13px;font-weight:600;">Periodo (mes)</label>
+                <input type="month" name="periodo" required style="border:1px solid var(--borde);border-radius:6px;padding:8px 12px;min-height:42px;">
+            </div>
+            <div>
+                <label style="display:block;margin-bottom:6px;color:var(--azul-oscuro);font-size:13px;font-weight:600;">Formato</label>
+                <select name="formato" style="border:1px solid var(--borde);border-radius:6px;padding:8px 12px;min-height:42px;">
+                    <option value="TXT">TXT</option>
+                    <option value="XML">XML</option>
+                </select>
+            </div>
+            <button type="submit" class="btn">Generar y descargar</button>
+        </form>
+    </section>
+
+    <section class="panel">
+        <table class="striped responsive-table">
+            <thead>
+                <tr>
+                    <th>Clave</th>
+                    <th>Nombre</th>
+                    <th>Periodo</th>
+                    <th>Registros</th>
+                    <th>Estatus</th>
+                </tr>
+            </thead>
+            <tbody id="reportesBody">
+                <tr>
+                    <td colspan="5">Cargando reportes...</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+</main>
+
+<script src="/js/db-ajax.js"></script>
+<script>
+    window.addEventListener('load', function() {
+        cargarReportes();
+    });
+</script>
+</body>
+</html>

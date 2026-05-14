@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <%- include('../css') %>
+</head>
+<body>
+<%- include('../nav') %>
+
+<main class="app-page">
+    <div class="app-header">
+        <div>
+            <h1 class="app-title">Historial de acciones</h1>
+            <p class="app-subtitle">Registro de trazabilidad de todas las operaciones realizadas en el sistema.</p>
+        </div>
+    </div>
+
+    <section class="panel">
+        <table class="striped responsive-table">
+            <thead>
+                <tr>
+                    <th>ID Log</th>
+                    <th>Usuario</th>
+                    <th>Accion</th>
+                    <th>Entidad afectada</th>
+                    <th>ID Entidad</th>
+                    <th>IP Origen</th>
+                    <th>Fecha / Hora</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% if (!registros || registros.length === 0) { %>
+                    <tr><td colspan="7" style="color:var(--muted)">No hay registros de actividad.</td></tr>
+                <% } else { %>
+                    <% registros.forEach(function(r) { %>
+                        <tr>
+                            <td><%= r.idlog %></td>
+                            <td><%= r.idusuario || '—' %></td>
+                            <td><%= r.accion || '—' %></td>
+                            <td><%= r.entidad || '—' %></td>
+                            <td><%= r.entidad_id || '—' %></td>
+                            <td><%= r.ip_origen || '—' %></td>
+                            <td><%= r.fecha ? new Date(r.fecha).toLocaleString('es-MX') : '—' %></td>
+                        </tr>
+                    <% }); %>
+                <% } %>
+            </tbody>
+        </table>
+    </section>
+</main>
+
+<%- include('../scripts') %>
+</body>
+</html>

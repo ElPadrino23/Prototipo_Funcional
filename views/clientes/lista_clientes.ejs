@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <%- include('./../css.ejs') %>
+</head>
+<body>
+<%- include('./../nav.ejs') %>
+
+<main class="app-page">
+    <div class="app-header">
+        <div>
+            <h1 class="app-title">Clientes</h1>
+            <p class="app-subtitle">Consulta de expediente, riesgo, PEP y documentos del cliente.</p>
+        </div>
+        <a href="/clientes/expediente" class="btn">Nuevo cliente</a>
+    </div>
+
+    <% if (typeof mensaje !== 'undefined' && mensaje) { %>
+        <div class="feedback"><%= mensaje %></div>
+    <% } %>
+
+    <section class="panel">
+        <table class="striped responsive-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre / Razon social</th>
+                    <th>RFC</th>
+                    <th>Tipo</th>
+                    <th>Riesgo</th>
+                    <th>PEP</th>
+                    <th>Docs</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody id="clientesBody">
+                <tr>
+                    <td colspan="7">Cargando clientes...</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+</main>
+
+<script src="/js/db-ajax.js"></script>
+<script>
+    window.addEventListener('load', function() {
+        cargarClientes();
+    });
+</script>
+</body>
+</html>

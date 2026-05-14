@@ -1,0 +1,48 @@
+// Modelo para reportes internos de conductas sospechosas
+
+const supabase = require('../config/supabase');
+
+exports.ObtenerReportesInternos = async function() {
+    try {
+        const { data, error } = await supabase
+            .from('reporte_interno')
+            .select('*')
+            .order('id', { ascending: false });
+
+        if (error) throw new Error(error.message);
+        return { exito: true, reportes: data || [] };
+    } catch (error) {
+        return { exito: false, reportes: [], error: error.message };
+    }
+};
+
+exports.CrearReporteInterno = async function(datos) {
+    try {
+        const { error } = await supabase.from('reporte_interno').insert([{
+            descripcion:  datos.descripcion,
+            anonimo:      datos.anonimo === 'true' || datos.anonimo === true,
+            estatus:      'Pendiente',
+            responsable:  null,
+            fecha:        new Date().toISOString().split('T')[0]
+        }]);
+
+        if (error) throw new Error(error.message);
+        return { exito: true };
+    } catch (error) {
+        return { exito: false, error: error.message };
+    }
+};
+
+exports.ActualizarReporteInterno = async function(id, datos) {
+    try {
+        const { error } = await supabase
+            .from('reporte_interno')
+            .update({ estatus: datos.estatus, responsable: datos.responsable || null })
+            .eq('id', id);
+
+        if (error) throw new Error(error.message);
+        return { exito: true };
+    } catch (error) {
+        return { exito: false, error: error.message };
+    }
+};
