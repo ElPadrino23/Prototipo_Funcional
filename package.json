@@ -10,12 +10,12 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.38.0",
     "body-parser": "^2.2.2",
+    "crypto": "^1.0.1",
     "ejs": "^5.0.2",
     "express": "^5.2.1",
-    "@supabase/supabase-js": "^2.38.0",
-    "express-fileupload": "^1.5.0",
-    "crypto": "^1.0.1"
+    "express-fileupload": "^1.5.0"
   },
   "devDependencies": {
     "nodemon": "^3.1.14"

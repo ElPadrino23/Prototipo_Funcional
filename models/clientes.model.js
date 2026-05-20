@@ -150,6 +150,41 @@ module.exports.ObtenerDocumentosCliente = async (idCliente) => {
 };
 
 
+// Insertar multiples clientes desde un CSV (append al final)
+module.exports.ImportarClientesDesdeCSV = async (clientes) => {
+    try {
+        const rows = clientes.map(function(c) {
+            return {
+                nombrerazonsocial:         c.nombrerazonsocial         || null,
+                tipocliente:               c.tipocliente               || 'Fisica',
+                rfc:                       c.rfc                       || null,
+                curp:                      c.curp                      || null,
+                estatuscliente:            c.estatuscliente            || 'Activo',
+                nombrecontactoprincipal:   c.nombrecontactoprincipal   || null,
+                telefono:                  c.telefono                  || null,
+                correoelectronico:         c.correoelectronico         || null,
+                callenumero:               c.callenumero               || null,
+                colonia:                   c.colonia                   || null,
+                ciudad:                    c.ciudad                    || null,
+                estado:                    c.estado                    || null,
+                codigopostal:              c.codigopostal              || null,
+                nivelriesgo:               c.nivelriesgo               || 'Bajo',
+                espep:                     c.espep === 'true' || c.espep === true,
+                limiteoperativoautorizado: parseFloat(c.limiteoperativoautorizado) || 0,
+                observaciones:             c.observaciones             || null
+            };
+        });
+
+        const { error } = await supabase.from('cliente').insert(rows);
+        if (error) throw new Error(error.message);
+        return { exito: true, insertados: rows.length };
+
+    } catch (error) {
+        return { exito: false, error: error.message };
+    }
+};
+
+
 // Actualizar estado de validacion de documento
 module.exports.ActualizarEstadoDocumento = async (idDocumento, estadoValidacion) => {
     try {

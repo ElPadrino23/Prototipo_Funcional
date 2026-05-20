@@ -28,6 +28,9 @@ router.post('/eliminar', controllerClientes.EliminarCliente);
 // RF-02: detalle del cliente con pestanas
 router.get('/detalle', controllerClientes.VistaDetalleCliente);
 
+// importar clientes desde CSV
+router.post('/importar-csv', controllerClientes.ImportarCSV);
+
 // RF-05: documentos del cliente
 router.get('/documentos', controllerClientes.VistaDocumentosCliente);
 router.post('/validar-documento', controllerClientes.ValidarDocumento);

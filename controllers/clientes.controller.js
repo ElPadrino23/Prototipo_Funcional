@@ -186,6 +186,46 @@ module.exports.ApiListaClientes = async (req, res) => {
     }
 };
 
+// Importar clientes desde un CSV
+module.exports.ImportarCSV = async (req, res) => {
+    try {
+        if (!req.files || !req.files.csv) {
+            return res.status(400).json({ exito: false, error: 'No se recibio el archivo CSV' });
+        }
+
+        const contenido = req.files.csv.data.toString('utf-8');
+        const lineas    = contenido.split('\n').map(function(l) { return l.trim(); }).filter(function(l) { return l.length > 0; });
+
+        if (lineas.length < 2) {
+            return res.status(400).json({ exito: false, error: 'El CSV esta vacio o no tiene datos' });
+        }
+
+        const encabezados = lineas[0].split(',');
+        const clientes    = [];
+
+        for (var i = 1; i < lineas.length; i++) {
+            const valores  = lineas[i].split(',');
+            const cliente  = {};
+            encabezados.forEach(function(col, idx) {
+                cliente[col.trim()] = (valores[idx] || '').trim();
+            });
+            clientes.push(cliente);
+        }
+
+        const resultado = await modelClientes.ImportarClientesDesdeCSV(clientes);
+
+        if (resultado.exito) {
+            modelHistorial.RegistrarAccion({ accion: 'Importar CSV clientes (' + resultado.insertados + ')', entidad: 'cliente', entidad_id: null, ip_origen: req.ip });
+            res.json({ exito: true, insertados: resultado.insertados });
+        } else {
+            res.status(400).json({ exito: false, error: resultado.error });
+        }
+    } catch (error) {
+        res.status(500).json({ exito: false, error: error.message });
+    }
+};
+
+
 // Cambiar el estado de los documentos
 module.exports.ValidarDocumento = async (req, res) => {
     try {

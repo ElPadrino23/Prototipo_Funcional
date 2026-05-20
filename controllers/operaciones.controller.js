@@ -2,6 +2,7 @@
 
 const modelOperaciones = require('../models/operaciones.model');
 const modelClientes    = require('../models/clientes.model');
+const modelAlertas     = require('../models/alertas.model');
 
 // Vista lista de operaciones
 module.exports.ObtenerOperaciones = async (req, res) => {
@@ -35,16 +36,32 @@ module.exports.ApiListaOperaciones = async (req, res) => {
 
 // Vista formulario agregar operacion
 module.exports.VistaAgregarOperacion = async (req, res) => {
-    res.render('./operaciones/agregar_operacion', {
-        mensaje: null
-    });
+    try {
+        const resultado = await modelClientes.ObtenerClientesLista();
+        res.render('./operaciones/agregar_operacion', {
+            clientes: resultado.clientes || []
+        });
+    } catch (error) {
+        res.status(500).send('Error: ' + error.message);
+    }
 };
 
 // Procesar nueva operacion via API
 module.exports.AgregarOperacion = async (req, res) => {
     try {
-        const resultado = await modelOperaciones.AgregarOperacion(req.body);
+        const datos = {
+            idcliente:     req.body.idCliente     || req.body.idcliente,
+            producto:      req.body.producto      || 'General',
+            tipooperacion: req.body.tipoOperacion || req.body.tipooperacion,
+            monto:         req.body.monto,
+            moneda:        req.body.moneda        || 'MXN',
+            fecha:         req.body.fecha
+        };
+
+        const resultado = await modelOperaciones.AgregarOperacion(datos);
+
         if (resultado.exito) {
+            await modelAlertas.GenerarAlertaSiAplica(resultado.operacion);
             res.json({ exito: true, msg: 'Operacion registrada para validacion' });
         } else {
             res.status(400).json({ exito: false, msg: resultado.error });
