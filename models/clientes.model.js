@@ -56,7 +56,7 @@ module.exports.GuardarCliente = async (datosCliente, archivos) => {
 
         const idCliente = cliente[0].idcliente;
 
-        // Guardar documentos si se subieron archivos
+        // Guardar documentos si se subieron archivos // linea 63 apoyados para la creacion de hash
         if (archivos && Object.keys(archivos).length > 0) {
             for (const [tipoDoc, archivo] of Object.entries(archivos)) {
                 if (archivo && archivo.size > 0) {

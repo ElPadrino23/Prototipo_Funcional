@@ -40,17 +40,9 @@
 
             <div class="login-actions">
                 <button type="submit" class="btn">Iniciar sesion</button>
-                <button type="button" class="btn-flat" id="btnDemo">Usar datos de acceso rapido</button>
             </div>
         </form>
     </section>
 </main>
-
-<script>
-    document.getElementById('btnDemo').addEventListener('click', function() {
-        document.getElementById('correo').value = '<%= usuarioDemo.correo %>';
-        document.getElementById('password').value = '<%= usuarioDemo.password %>';
-    });
-</script>
 </body>
 </html>

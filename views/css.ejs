@@ -30,28 +30,59 @@
         line-height: 1.45;
     }
 
-    .app-nav {
-        background: var(--azul-principal);
-        box-shadow: none;
+    .app-sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 220px;
+        height: 100vh;
+        background: var(--azul-oscuro);
+        display: flex;
+        flex-direction: column;
+        z-index: 100;
+        overflow-y: auto;
     }
 
-    .app-nav .brand-logo {
-        font-size: 19px;
-        margin-left: 14px;
-        font-weight: 600;
+    .sidebar-brand {
+        padding: 16px 18px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     }
 
-    .app-nav a {
+    .sidebar-brand a {
+        color: white;
+        font-size: 16px;
+        display: block;
+        text-decoration: none;
+    }
+
+    .sidebar-menu {
+        list-style: none;
+        margin: 0;
+        padding: 10px 0;
+        flex: 1;
+    }
+
+    .sidebar-menu li a {
+        display: block;
+        padding: 11px 18px;
+        color: rgba(255, 255, 255, 0.75);
+        font-size: 14px;
+        text-decoration: none;
+    }
+
+    .sidebar-menu li a:hover {
+        background: rgba(255, 255, 255, 0.08);
         color: white;
     }
 
-    .app-nav li.active {
-        background: rgba(255, 255, 255, 0.18);
+    .sidebar-menu li.active a {
+        background: rgba(255, 255, 255, 0.15);
+        color: white;
+        font-weight: 600;
+        border-left: 3px solid white;
+        padding-left: 15px;
     }
 
-    .app-menu a {
-        font-size: 14px;
-    }
 
     .nav-context {
         background: white;
@@ -550,19 +581,6 @@
     }
 
     @media (max-width: 900px) {
-        .app-nav .brand-logo {
-            position: static;
-            display: block;
-            transform: none;
-        }
-
-        .app-nav ul.right {
-            float: none !important;
-            display: flex;
-            overflow-x: auto;
-            width: 100%;
-        }
-
         .nav-context-inner {
             display: block;
             padding: 10px 0;

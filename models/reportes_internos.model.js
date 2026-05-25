@@ -1,5 +1,4 @@
-// Modelo para reportes internos de conductas sospechosas
-
+// Modelo para reportes internos de  conductas weird
 const supabase = require('../config/supabase');
 
 exports.ObtenerReportesInternos = async function() {
