@@ -19,14 +19,14 @@
     </div>
 
     <!-- Pestanas -->
-    <nav class="tabs-lite" id="tabsNav">
+    <div class="tabs-lite" id="tabsNav">
         <button class="tab-lite active" onclick="mostrarTab('datos')">Datos generales</button>
         <button class="tab-lite" onclick="mostrarTab('documentos')">Documentos (<%= documentos.length %>)</button>
         <button class="tab-lite" onclick="mostrarTab('operaciones')">Operaciones (<%= operaciones.length %>)</button>
         <button class="tab-lite" onclick="mostrarTab('contratos')">Contratos (<%= contratos.length %>)</button>
         <button class="tab-lite" onclick="mostrarTab('alertas')">Alertas (<%= alertas.length %>)</button>
         <button class="tab-lite" onclick="mostrarTab('riesgo')">Perfil de riesgo</button>
-    </nav>
+    </div>
 
     <!-- Tab: Datos generales -->
     <section class="panel" id="tab-datos">
