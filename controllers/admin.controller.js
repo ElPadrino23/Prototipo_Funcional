@@ -26,7 +26,7 @@ module.exports.ApiListaUsuarios = async (req, res) => {
                 nombre:    [u.nombre || '', u.apellido || ''].join(' ').trim(),
                 correo:    u.correo || u.email || '',
                 rol:       u.rol || 'Usuario',
-                estado:    u.activo === false ? 'Inactivo' : 'Activo'
+                estado:    u.estado || 'Activo'
             };
         });
 
@@ -57,20 +57,45 @@ module.exports.AgregarUsuario = async (req, res) => {
 
 module.exports.VistaEditarUsuario = async (req, res) => {
     try {
-        const { data } = await supabase.from('usuario').select('*').eq('idusuario', req.query.id).single();
-        res.render('./admin/editar_usuario', { usuario: data });
+        const { data, error } = await supabase.from('usuario').select('*').eq('idusuario', req.query.id).single();
+        if (error || !data) return res.redirect('/admin/lista');
+        res.render('./admin/editar_usuario', { usuario: data, mensaje: null });
     } catch (e) {
         res.redirect('/admin/lista');
     }
 };
 
 module.exports.EditarUsuario = async (req, res) => {
+    const id = req.body.idusuario;
     try {
-        await supabase.from('usuario')
-            .update({ nombre: req.body.nombre, apellido: req.body.apellido || '', rol: req.body.rol })
-            .eq('idusuario', req.body.idusuario);
-    } catch (e) {}
-    res.redirect('/admin/lista');
+        const { error } = await supabase.from('usuario')
+            .update({
+                nombre:   req.body.nombre,
+                apellido: req.body.apellido || '',
+                correo:   req.body.correo,
+                rol:      req.body.rol,
+                estado:   req.body.estado
+            })
+            .eq('idusuario', id);
+
+        if (error) throw new Error(error.message);
+
+        const { data } = await supabase.from('usuario').select('*').eq('idusuario', id).single();
+        return res.render('./admin/editar_usuario', {
+            usuario: data,
+            mensaje: { tipo: 'ok', texto: 'Usuario actualizado correctamente.' }
+        });
+    } catch (e) {
+        let usuarioActual = req.body;
+        try {
+            const { data } = await supabase.from('usuario').select('*').eq('idusuario', id).single();
+            if (data) usuarioActual = data;
+        } catch (_) {}
+        return res.render('./admin/editar_usuario', {
+            usuario: usuarioActual,
+            mensaje: { tipo: 'error', texto: 'Error al guardar: ' + e.message }
+        });
+    }
 };
 
 module.exports.EliminarUsuario = async (req, res) => {

@@ -26,79 +26,101 @@
     <div id="paso1">
         <section class="panel">
             <div class="form-grid">
+
                 <div>
-                    <label for="nombre">Nombre / Razon Social</label>
-                    <input type="text" id="nombre" required>
+                    <label for="nombre">Nombre / Razon Social *</label>
+                    <input type="text" id="nombre" placeholder="Nombre completo o razón social" required>
                 </div>
+
                 <div>
-                    <label for="rfc">RFC</label>
-                    <input type="text" id="rfc" required>
+                    <label for="tipoCliente">Tipo de cliente *</label>
+                    <select id="tipoCliente" required>
+                        <option value="Persona Física">Persona Física</option>
+                        <option value="Persona Moral">Persona Moral</option>
+                    </select>
                 </div>
+
                 <div>
+                    <label for="rfc">RFC *</label>
+                    <input type="text" id="rfc"
+                        maxlength="13"
+                        minlength="12"
+                        placeholder="XAXX010101000"
+                        style="text-transform:uppercase;"
+                        required>
+                </div>
+
+                <div id="campoCurp">
                     <label for="curp">CURP</label>
-                    <input type="text" id="curp">
+                    <input type="text" id="curp"
+                        maxlength="18"
+                        minlength="18"
+                        placeholder="XAXX010101HXXXXX00"
+                        style="text-transform:uppercase;">
                 </div>
+
                 <div>
-                    <label for="tipoCliente">Tipo de cliente</label>
-                    <select id="tipoCliente">
-                        <option value="Fisica">Persona Fisica</option>
-                        <option value="Moral">Persona Moral</option>
-                    </select>
+                    <label for="telefono">Teléfono</label>
+                    <input type="tel" id="telefono"
+                        maxlength="10"
+                        pattern="[0-9]{10}"
+                        placeholder="5512345678"
+                        title="Exactamente 10 dígitos numéricos">
                 </div>
+
                 <div>
-                    <label for="estatusCliente">Estatus</label>
-                    <select id="estatusCliente">
-                        <option value="Activo">Activo</option>
-                        <option value="Inactivo">Inactivo</option>
-                        <option value="En revision">En revision</option>
-                    </select>
+                    <label for="correo">Correo electrónico</label>
+                    <input type="email" id="correo"
+                        placeholder="ejemplo@correo.com"
+                        title="Ingresa un correo electrónico válido">
                 </div>
+
                 <div>
-                    <label for="contactoPrincipal">Contacto principal</label>
-                    <input type="text" id="contactoPrincipal">
+                    <label for="calle">Calle y número</label>
+                    <input type="text" id="calle" placeholder="Av. Insurgentes Sur 1234">
                 </div>
-                <div>
-                    <label for="telefono">Telefono</label>
-                    <input type="text" id="telefono">
-                </div>
-                <div>
-                    <label for="correo">Correo electronico</label>
-                    <input type="email" id="correo">
-                </div>
-                <div>
-                    <label for="calle">Calle y numero</label>
-                    <input type="text" id="calle">
-                </div>
+
                 <div>
                     <label for="colonia">Colonia</label>
-                    <input type="text" id="colonia">
+                    <input type="text" id="colonia" placeholder="Del Valle">
                 </div>
+
                 <div>
                     <label for="ciudad">Ciudad</label>
-                    <input type="text" id="ciudad">
+                    <input type="text" id="ciudad" placeholder="Ciudad de México">
                 </div>
+
                 <div>
                     <label for="estado">Estado</label>
-                    <input type="text" id="estado">
+                    <input type="text" id="estado" placeholder="CDMX">
                 </div>
+
                 <div>
-                    <label for="codigoPostal">Codigo postal</label>
-                    <input type="text" id="codigoPostal">
+                    <label for="codigoPostal">Código postal</label>
+                    <input type="text" id="codigoPostal"
+                        maxlength="5"
+                        pattern="[0-9]{5}"
+                        placeholder="03100"
+                        title="Exactamente 5 dígitos numéricos">
                 </div>
+
                 <div>
-                    <label for="limiteOperativo">Limite autorizado (MXN)</label>
-                    <input type="number" id="limiteOperativo" min="0">
+                    <label for="limiteOperativo">Límite operativo autorizado (MXN)</label>
+                    <input type="number" id="limiteOperativo" min="0" placeholder="0">
                 </div>
+
                 <div style="grid-column: 1 / -1;">
                     <label for="observaciones">Observaciones</label>
-                    <textarea id="observaciones" rows="3" style="width:100%; resize:vertical;"></textarea>
+                    <textarea id="observaciones" rows="3" style="width:100%; resize:vertical;" placeholder="Información adicional relevante..."></textarea>
                 </div>
+
                 <div style="grid-column: 1 / -1; display:flex; align-items:center; gap:10px;">
                     <label style="display:flex; align-items:center; gap:8px; margin:0; cursor:pointer;">
                         <input type="checkbox" id="esPEP">
-                        <span style="font-weight:400; color:var(--texto);">Es Persona Expuesta Politicamente (PEP)</span>
+                        <span style="font-weight:400; color:var(--texto);">Es Persona Expuesta Políticamente (PEP)</span>
                     </label>
                 </div>
+
                 <div style="grid-column: 1 / -1;">
                     <p style="margin:0; font-size:13px; color:var(--muted);">
                         Nivel de riesgo calculado:
@@ -106,6 +128,9 @@
                     </p>
                 </div>
             </div>
+
+            <div id="erroresPaso1" style="display:none; margin-top:12px;"></div>
+
             <div class="form-actions">
                 <button class="btn" onclick="irPaso2()">Siguiente: Documentos &rarr;</button>
             </div>
@@ -115,28 +140,39 @@
     <!-- Paso 2: Documentos -->
     <div id="paso2" style="display:none">
         <section class="panel">
-            <div class="form-grid">
-                <div>
-                    <label for="ine">INE o Pasaporte</label>
-                    <input type="file" id="ine" style="padding:8px 0;">
+            <p style="margin:0 0 20px; font-size:13px; color:var(--muted);">
+                Adjunta los documentos del cliente en formato <strong style="color:var(--texto);">PDF</strong>. Todos son opcionales.
+            </p>
+
+            <div style="display:flex; flex-direction:column; gap:12px;">
+
+                <div style="display:flex; align-items:center; gap:16px; padding:14px 16px; background:#f8fbff; border:1px solid var(--borde); border-radius:8px;">
+                    <span style="min-width:220px; font-size:13px; font-weight:600; color:var(--azul-oscuro);">INE o Pasaporte</span>
+                    <input type="file" id="ine" accept=".pdf,application/pdf" style="flex:1; font-size:13px;">
                 </div>
-                <div>
-                    <label for="compDomicilio">Comprobante de domicilio</label>
-                    <input type="file" id="compDomicilio" style="padding:8px 0;">
+
+                <div style="display:flex; align-items:center; gap:16px; padding:14px 16px; background:#f8fbff; border:1px solid var(--borde); border-radius:8px;">
+                    <span style="min-width:220px; font-size:13px; font-weight:600; color:var(--azul-oscuro);">Comprobante de domicilio</span>
+                    <input type="file" id="compDomicilio" accept=".pdf,application/pdf" style="flex:1; font-size:13px;">
                 </div>
-                <div>
-                    <label for="docRfc">RFC (documento)</label>
-                    <input type="file" id="docRfc" style="padding:8px 0;">
+
+                <div style="display:flex; align-items:center; gap:16px; padding:14px 16px; background:#f8fbff; border:1px solid var(--borde); border-radius:8px;">
+                    <span style="min-width:220px; font-size:13px; font-weight:600; color:var(--azul-oscuro);">RFC (documento)</span>
+                    <input type="file" id="docRfc" accept=".pdf,application/pdf" style="flex:1; font-size:13px;">
                 </div>
-                <div>
-                    <label for="docCurp">CURP (documento)</label>
-                    <input type="file" id="docCurp" style="padding:8px 0;">
+
+                <div style="display:flex; align-items:center; gap:16px; padding:14px 16px; background:#f8fbff; border:1px solid var(--borde); border-radius:8px;">
+                    <span style="min-width:220px; font-size:13px; font-weight:600; color:var(--azul-oscuro);">CURP (documento)</span>
+                    <input type="file" id="docCurp" accept=".pdf,application/pdf" style="flex:1; font-size:13px;">
                 </div>
-                <div>
-                    <label for="constancia">Constancia de situacion fiscal</label>
-                    <input type="file" id="constancia" style="padding:8px 0;">
+
+                <div style="display:flex; align-items:center; gap:16px; padding:14px 16px; background:#f8fbff; border:1px solid var(--borde); border-radius:8px;">
+                    <span style="min-width:220px; font-size:13px; font-weight:600; color:var(--azul-oscuro);">Constancia de situación fiscal</span>
+                    <input type="file" id="constancia" accept=".pdf,application/pdf" style="flex:1; font-size:13px;">
                 </div>
+
             </div>
+
             <div class="form-actions">
                 <button class="btn secondary" onclick="irPaso1()">&larr; Anterior</button>
                 <button class="btn" onclick="irPaso3()">Siguiente: Resumen &rarr;</button>
@@ -157,21 +193,60 @@
 </main>
 
 <script>
+    function actualizarCurp() {
+        const tipo  = document.getElementById('tipoCliente').value;
+        const campo = document.getElementById('campoCurp');
+        const input = document.getElementById('curp');
+        if (tipo === 'Persona Moral') {
+            campo.style.display = 'none';
+            input.value = '';
+        } else {
+            campo.style.display = 'block';
+        }
+    }
+
+    document.getElementById('tipoCliente').addEventListener('change', actualizarCurp);
+    actualizarCurp();
+
     document.getElementById('esPEP').addEventListener('change', calcularRiesgo);
     document.getElementById('limiteOperativo').addEventListener('input', calcularRiesgo);
+
+    // Forzar mayusculas en RFC y CURP
+    document.getElementById('rfc').addEventListener('input', function() {
+        this.value = this.value.toUpperCase();
+    });
+    document.getElementById('curp').addEventListener('input', function() {
+        this.value = this.value.toUpperCase();
+    });
+
+    // Solo digitos en telefono y CP
+    document.getElementById('telefono').addEventListener('input', function() {
+        this.value = this.value.replace(/\D/g, '');
+    });
+    document.getElementById('codigoPostal').addEventListener('input', function() {
+        this.value = this.value.replace(/\D/g, '');
+    });
 
     function calcularRiesgo() {
         const esPEP  = document.getElementById('esPEP').checked;
         const limite = parseFloat(document.getElementById('limiteOperativo').value) || 0;
         let riesgo   = 'Bajo';
-
         if (esPEP) {
             riesgo = 'Alto';
         } else if (limite > 1500000) {
             riesgo = 'Medio';
         }
-
         document.getElementById('nivelRiesgo').textContent = riesgo;
+    }
+
+    function mostrarErrores(errores) {
+        const div = document.getElementById('erroresPaso1');
+        if (errores.length === 0) {
+            div.style.display = 'none';
+            return;
+        }
+        div.style.display = 'block';
+        div.innerHTML = '<div class="feedback error">' + errores.join('<br>') + '</div>';
     }
 
     function setIndicador(paso) {
@@ -179,12 +254,12 @@
             const el = document.getElementById('ind' + i);
             if (i === paso) {
                 el.style.background = 'var(--azul-principal)';
-                el.style.color = 'white';
-                el.style.border = 'none';
+                el.style.color      = 'white';
+                el.style.border     = 'none';
             } else {
                 el.style.background = 'white';
-                el.style.color = 'var(--muted)';
-                el.style.border = '1px solid var(--borde)';
+                el.style.color      = 'var(--muted)';
+                el.style.border     = '1px solid var(--borde)';
             }
         });
     }
@@ -197,14 +272,29 @@
     }
 
     function irPaso2() {
+        const errores = [];
+
         const nombre = document.getElementById('nombre').value.trim();
         const rfc    = document.getElementById('rfc').value.trim();
+        const curp   = document.getElementById('curp').value.trim();
+        const tel    = document.getElementById('telefono').value.trim();
+        const correo = document.getElementById('correo').value.trim();
+        const cp     = document.getElementById('codigoPostal').value.trim();
 
-        if (!nombre || !rfc) {
-            alert('Nombre y RFC son obligatorios');
+        if (!nombre) errores.push('• El nombre / razón social es obligatorio.');
+        if (!rfc)    errores.push('• El RFC es obligatorio.');
+        if (rfc && (rfc.length < 12 || rfc.length > 13)) errores.push('• El RFC debe tener 12 o 13 caracteres.');
+        if (curp && curp.length !== 18) errores.push('• La CURP debe tener exactamente 18 caracteres.');
+        if (tel && !/^\d{10}$/.test(tel)) errores.push('• El teléfono debe tener exactamente 10 dígitos numéricos.');
+        if (correo && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correo)) errores.push('• El correo electrónico no tiene un formato válido.');
+        if (cp && !/^\d{5}$/.test(cp)) errores.push('• El código postal debe tener exactamente 5 dígitos numéricos.');
+
+        if (errores.length > 0) {
+            mostrarErrores(errores);
             return;
         }
 
+        mostrarErrores([]);
         document.getElementById('paso1').style.display = 'none';
         document.getElementById('paso2').style.display = 'block';
         document.getElementById('paso3').style.display = 'none';
@@ -215,23 +305,21 @@
         const riesgo = document.getElementById('nivelRiesgo').textContent;
 
         const campos = [
-            ['Nombre',           document.getElementById('nombre').value],
-            ['RFC',              document.getElementById('rfc').value],
-            ['CURP',             document.getElementById('curp').value || '-'],
-            ['Tipo',             document.getElementById('tipoCliente').value],
-            ['Estatus',          document.getElementById('estatusCliente').value],
-            ['Contacto',         document.getElementById('contactoPrincipal').value || '-'],
-            ['Telefono',         document.getElementById('telefono').value || '-'],
-            ['Correo',           document.getElementById('correo').value || '-'],
-            ['Calle',            document.getElementById('calle').value || '-'],
-            ['Colonia',          document.getElementById('colonia').value || '-'],
-            ['Ciudad',           document.getElementById('ciudad').value || '-'],
-            ['Estado',           document.getElementById('estado').value || '-'],
-            ['Codigo postal',    document.getElementById('codigoPostal').value || '-'],
-            ['Limite operativo', '$' + (document.getElementById('limiteOperativo').value || 0)],
-            ['Es PEP',           document.getElementById('esPEP').checked ? 'Si' : 'No'],
-            ['Nivel de riesgo',  riesgo],
-            ['Observaciones',    document.getElementById('observaciones').value || '-'],
+            ['Nombre / Razón social', document.getElementById('nombre').value],
+            ['Tipo de cliente',       document.getElementById('tipoCliente').value],
+            ['RFC',                   document.getElementById('rfc').value],
+            ['CURP',                  document.getElementById('curp').value || '-'],
+            ['Teléfono',              document.getElementById('telefono').value || '-'],
+            ['Correo',                document.getElementById('correo').value || '-'],
+            ['Calle y número',        document.getElementById('calle').value || '-'],
+            ['Colonia',               document.getElementById('colonia').value || '-'],
+            ['Ciudad',                document.getElementById('ciudad').value || '-'],
+            ['Estado',                document.getElementById('estado').value || '-'],
+            ['Código postal',         document.getElementById('codigoPostal').value || '-'],
+            ['Límite operativo',      '$' + (document.getElementById('limiteOperativo').value || 0)],
+            ['Es PEP',                document.getElementById('esPEP').checked ? 'Sí' : 'No'],
+            ['Nivel de riesgo',       riesgo],
+            ['Observaciones',         document.getElementById('observaciones').value || '-'],
         ];
 
         document.getElementById('resumen').innerHTML = campos.map(function(c) {
@@ -247,23 +335,22 @@
     async function guardarExpediente() {
         const formData = new FormData();
 
-        formData.append('nombre',            document.getElementById('nombre').value);
-        formData.append('rfc',               document.getElementById('rfc').value);
-        formData.append('curp',              document.getElementById('curp').value);
-        formData.append('tipoCliente',       document.getElementById('tipoCliente').value);
-        formData.append('estatusCliente',    document.getElementById('estatusCliente').value);
-        formData.append('contactoPrincipal', document.getElementById('contactoPrincipal').value);
-        formData.append('telefono',          document.getElementById('telefono').value);
-        formData.append('correo',            document.getElementById('correo').value);
-        formData.append('calle',             document.getElementById('calle').value);
-        formData.append('colonia',           document.getElementById('colonia').value);
-        formData.append('ciudad',            document.getElementById('ciudad').value);
-        formData.append('estado',            document.getElementById('estado').value);
-        formData.append('codigoPostal',      document.getElementById('codigoPostal').value);
-        formData.append('limiteOperativo',   document.getElementById('limiteOperativo').value);
-        formData.append('esPEP',             document.getElementById('esPEP').checked ? 'Sí' : 'No');
-        formData.append('nivelRiesgo',       document.getElementById('nivelRiesgo').textContent);
-        formData.append('observaciones',     document.getElementById('observaciones').value);
+        formData.append('nombre',          document.getElementById('nombre').value);
+        formData.append('rfc',             document.getElementById('rfc').value);
+        formData.append('curp',            document.getElementById('curp').value);
+        formData.append('tipoCliente',     document.getElementById('tipoCliente').value);
+        formData.append('estatusCliente',  'Activo');
+        formData.append('telefono',        document.getElementById('telefono').value);
+        formData.append('correo',          document.getElementById('correo').value);
+        formData.append('calle',           document.getElementById('calle').value);
+        formData.append('colonia',         document.getElementById('colonia').value);
+        formData.append('ciudad',          document.getElementById('ciudad').value);
+        formData.append('estado',          document.getElementById('estado').value);
+        formData.append('codigoPostal',    document.getElementById('codigoPostal').value);
+        formData.append('limiteOperativo', document.getElementById('limiteOperativo').value);
+        formData.append('esPEP',           document.getElementById('esPEP').checked ? 'Sí' : 'No');
+        formData.append('nivelRiesgo',     document.getElementById('nivelRiesgo').textContent);
+        formData.append('observaciones',   document.getElementById('observaciones').value);
 
         const archivos = [
             { id: 'ine',           nombre: 'INE' },
@@ -275,9 +362,7 @@
 
         archivos.forEach(function(a) {
             const input = document.getElementById(a.id);
-            if (input.files[0]) {
-                formData.append(a.nombre, input.files[0]);
-            }
+            if (input.files[0]) formData.append(a.nombre, input.files[0]);
         });
 
         try {
@@ -285,15 +370,17 @@
             const result = await resp.json();
 
             if (result.exito) {
-                alert('Expediente guardado, su ID: ' + result.idCliente);
+                alert('Expediente guardado correctamente. ID del cliente: ' + result.idCliente);
                 window.location.href = '/clientes/lista';
             } else {
-                alert('Error: ' + result.error);
+                alert('Error al guardar: ' + result.error);
             }
         } catch (err) {
             alert('Error al guardar: ' + err.message);
         }
     }
 </script>
+
+<%- include('./../scripts.ejs') %>
 </body>
 </html>

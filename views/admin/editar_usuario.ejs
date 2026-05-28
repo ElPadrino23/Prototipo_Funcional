@@ -15,6 +15,10 @@
         <a href="/admin/lista" class="btn secondary">Volver a la lista</a>
     </div>
 
+    <% if (typeof mensaje !== 'undefined' && mensaje) { %>
+        <div class="feedback <%= mensaje.tipo === 'error' ? 'error' : '' %>"><%= mensaje.texto %></div>
+    <% } %>
+
     <section class="panel">
         <form action="/admin/editar" method="POST">
 
@@ -32,11 +36,23 @@
                 </div>
 
                 <div>
+                    <label for="correo">Correo</label>
+                    <input type="email" name="correo" id="correo" value="<%= usuario.correo || '' %>" required>
+                </div>
+
+                <div>
                     <label for="rol">Rol</label>
-                    <select name="rol" id="rol">
-                        <option value="Administrador"          <%= (usuario.rol || '') === 'Administrador'          ? 'selected' : '' %>>Administrador</option>
+                    <select name="rol" id="rol" required>
+                        <option value="Analista"                <%= (usuario.rol || '') === 'Analista'                ? 'selected' : '' %>>Analista</option>
                         <option value="Oficial de Cumplimiento" <%= (usuario.rol || '') === 'Oficial de Cumplimiento' ? 'selected' : '' %>>Oficial de Cumplimiento</option>
-                        <option value="Analista"               <%= (usuario.rol || '') === 'Analista'               ? 'selected' : '' %>>Analista</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label for="estado">Estado</label>
+                    <select name="estado" id="estado" required>
+                        <option value="Activo"   <%= (usuario.estado || '') === 'Activo'   ? 'selected' : '' %>>Activo</option>
+                        <option value="Inactivo" <%= (usuario.estado || '') === 'Inactivo' ? 'selected' : '' %>>Inactivo</option>
                     </select>
                 </div>
             </div>

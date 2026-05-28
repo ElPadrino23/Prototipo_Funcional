@@ -21,25 +21,29 @@
 
     <!-- Agregar entrada -->
     <section class="panel" style="margin-bottom:18px;">
-        <h3 style="margin:0 0 14px;color:var(--azul-oscuro);font-size:16px;">Agregar entrada</h3>
-        <form action="/admin/pep/agregar" method="POST" style="display:flex;gap:12px;align-items:flex-end;flex-wrap:wrap;">
-            <div>
-                <label style="display:block;margin-bottom:6px;color:var(--azul-oscuro);font-size:13px;font-weight:600;">Nombre</label>
-                <input type="text" name="nombre" required style="border:1px solid var(--borde);border-radius:6px;padding:8px 12px;min-height:42px;min-width:220px;">
+        <h3 style="margin:0 0 16px;color:var(--azul-oscuro);font-size:16px;">Agregar entrada</h3>
+        <form action="/admin/pep/agregar" method="POST">
+            <div class="form-grid">
+                <div>
+                    <label>Nombre</label>
+                    <input type="text" name="nombre" required placeholder="Nombre completo">
+                </div>
+                <div>
+                    <label>RFC</label>
+                    <input type="text" name="rfc" maxlength="13" placeholder="XAXX010101000" style="text-transform:uppercase;">
+                </div>
+                <div>
+                    <label>Tipo de lista</label>
+                    <select name="tipo_lista">
+                        <option value="PEP">PEP</option>
+                        <option value="Sancion">Sanción</option>
+                        <option value="Riesgo">Riesgo</option>
+                    </select>
+                </div>
             </div>
-            <div>
-                <label style="display:block;margin-bottom:6px;color:var(--azul-oscuro);font-size:13px;font-weight:600;">RFC</label>
-                <input type="text" name="rfc" style="border:1px solid var(--borde);border-radius:6px;padding:8px 12px;min-height:42px;width:160px;">
+            <div class="form-actions">
+                <button type="submit" class="btn">Agregar</button>
             </div>
-            <div>
-                <label style="display:block;margin-bottom:6px;color:var(--azul-oscuro);font-size:13px;font-weight:600;">Tipo de lista</label>
-                <select name="tipo_lista" style="border:1px solid var(--borde);border-radius:6px;padding:8px 12px;min-height:42px;">
-                    <option value="PEP">PEP</option>
-                    <option value="Sancion">Sancion</option>
-                    <option value="Riesgo">Riesgo</option>
-                </select>
-            </div>
-            <button type="submit" class="btn">Agregar</button>
         </form>
     </section>
 
