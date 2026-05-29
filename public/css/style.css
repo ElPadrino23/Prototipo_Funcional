@@ -77,14 +77,19 @@ body {
     padding-left: 15px;
 }
 
-.sidebar-menu li a.logout {
-    background: var(--rojo);
-    color: white;
+.app-sidebar .sidebar-menu li a.logout,
+.app-sidebar .sidebar-menu li a.logout:link,
+.app-sidebar .sidebar-menu li a.logout:visited {
+    background: #c75757 !important;
+    color: white !important;
+    margin: 8px 12px;
+    border-radius: 6px;
+    padding: 11px 18px !important;
 }
 
-.sidebar-menu li a.logout:hover {
-    background: #a84444;
-    color: white;
+.app-sidebar .sidebar-menu li a.logout:hover {
+    background: #a84444 !important;
+    color: white !important;
 }
 
 /* ── Nav contextual ── */

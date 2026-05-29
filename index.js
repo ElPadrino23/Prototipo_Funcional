@@ -84,9 +84,9 @@ app.use('/reglas', auth, rutasReglas);
 const rutasHistorial = require('./routes/historial.routes');
 app.use('/historial', auth, rutasHistorial);
 
-// Rutas de reportes internos
-const rutasReportesInternos = require('./routes/reportes_internos.routes');
-app.use('/reportes-internos', auth, rutasReportesInternos);
+// Rutas de buzón interno
+const rutasBuzonInterno = require('./routes/buzon_interno.routes');
+app.use('/buzon-interno', auth, rutasBuzonInterno);
 
 // Rutas de login
 const rutasLogin = require('./routes/login.routes');

@@ -32,8 +32,11 @@
         <li class="<%= currentPath.indexOf('/historial') === 0 ? 'active' : '' %>">
             <a href="/historial/lista">Historial</a>
         </li>
+        <li class="<%= currentPath.indexOf('/buzon-interno') === 0 ? 'active' : '' %>">
+            <a href="/buzon-interno/lista">Buzón Interno</a>
+        </li>
         <li>
-            <a href="/login" class="logout">Cerrar sesion</a>
+            <a href="/login" class="logout" style="background:#c75757 !important; color:white !important; display:block;">Cerrar sesion</a>
         </li>
     </ul>
 </aside>
@@ -58,6 +61,8 @@
             <span>/ Reglas</span>
         <% } else if (currentPath.indexOf('/historial') === 0) { %>
             <span>/ Historial</span>
+        <% } else if (currentPath.indexOf('/buzon-interno') === 0) { %>
+            <span>/ Buzón Interno</span>
         <% } %>
     </div>
 </div>

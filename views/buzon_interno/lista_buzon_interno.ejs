@@ -9,10 +9,10 @@
 <main class="app-page">
     <div class="app-header">
         <div>
-            <h1 class="app-title">Reportes internos</h1>
-            <p class="app-subtitle">Canal para reportar conductas sospechosas. Los reportes anonimos no revelan la identidad del reportante.</p>
+            <h1 class="app-title">Buzón Interno</h1>
+            <p class="app-subtitle">Canal para reportar conductas sospechosas. Los reportes anónimos no revelan la identidad del reportante.</p>
         </div>
-        <a href="/reportes-internos/agregar" class="btn">Nuevo reporte</a>
+        <a href="/buzon-interno/agregar" class="btn">Nuevo reporte</a>
     </div>
 
     <% if (mensaje) { %>
@@ -34,7 +34,7 @@
             </thead>
             <tbody>
                 <% if (reportes.length === 0) { %>
-                    <tr><td colspan="7" style="color:var(--muted)">Sin reportes internos.</td></tr>
+                    <tr><td colspan="7" style="color:var(--muted)">Sin reportes registrados.</td></tr>
                 <% } %>
                 <% reportes.forEach(function(r) { %>
                     <tr>
@@ -46,7 +46,7 @@
                         <td><%= r.fecha || '—' %></td>
                         <td>
                             <% if (r.estatus !== 'Cerrado') { %>
-                            <form action="/reportes-internos/actualizar" method="POST" style="display:flex;gap:6px;">
+                            <form action="/buzon-interno/actualizar" method="POST" style="display:flex;gap:6px;">
                                 <input type="hidden" name="id" value="<%= r.id %>">
                                 <input type="text" name="responsable" placeholder="Responsable" value="<%= r.responsable || '' %>" style="border:1px solid var(--borde);border-radius:6px;padding:6px 10px;font-size:13px;width:130px;">
                                 <select name="estatus" style="border:1px solid var(--borde);border-radius:6px;padding:6px 8px;font-size:13px;">

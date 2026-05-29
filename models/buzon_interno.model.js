@@ -1,7 +1,6 @@
-// Modelo para reportes internos de  conductas weird
 const supabase = require('../config/supabase');
 
-exports.ObtenerReportesInternos = async function() {
+exports.ObtenerReportes = async function() {
     try {
         const { data, error } = await supabase
             .from('reporte_interno')
@@ -15,14 +14,14 @@ exports.ObtenerReportesInternos = async function() {
     }
 };
 
-exports.CrearReporteInterno = async function(datos) {
+exports.CrearReporte = async function(datos) {
     try {
         const { error } = await supabase.from('reporte_interno').insert([{
-            descripcion:  datos.descripcion,
-            anonimo:      datos.anonimo === 'true' || datos.anonimo === true,
-            estatus:      'Pendiente',
-            responsable:  null,
-            fecha:        new Date().toISOString().split('T')[0]
+            descripcion: datos.descripcion,
+            anonimo:     datos.anonimo === 'true' || datos.anonimo === true,
+            estatus:     'Pendiente',
+            responsable: null,
+            fecha:       new Date().toISOString().split('T')[0]
         }]);
 
         if (error) throw new Error(error.message);
@@ -32,7 +31,7 @@ exports.CrearReporteInterno = async function(datos) {
     }
 };
 
-exports.ActualizarReporteInterno = async function(id, datos) {
+exports.ActualizarReporte = async function(id, datos) {
     try {
         const { error } = await supabase
             .from('reporte_interno')
