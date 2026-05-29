@@ -20,6 +20,7 @@ module.exports.ProcesarLogin = async (req, res) => {
     const { correo, password } = req.body;
 
     if (correo === usuarioDemo.correo && password === usuarioDemo.password) {
+        req.session.usuario = { nombre: 'Demo', correo: correo, rol: 'Demo' };
         return res.redirect('/dashboard');
     }
 
@@ -27,6 +28,7 @@ module.exports.ProcesarLogin = async (req, res) => {
         const usuario = await modelLogin.ValidarCredenciales(correo, password);
 
         if (usuario) {
+            req.session.usuario = usuario;
             return res.redirect('/dashboard');
         }
 
@@ -38,7 +40,9 @@ module.exports.ProcesarLogin = async (req, res) => {
 
 // Logout
 module.exports.Logout = async (req, res) => {
-    res.redirect('/login');
+    req.session.destroy(() => {
+        res.redirect('/login');
+    });
 };
 
 // Vista de registro

@@ -5,6 +5,8 @@ const express    = require('express');
 const bodyParser = require('body-parser');
 const path       = require('path');
 const fileUpload = require('express-fileupload');
+const session    = require('express-session');
+const auth       = require('./middleware/auth');
 const app = express();
 
 const modelClientes    = require('./models/clientes.model');
@@ -20,6 +22,14 @@ const usuarioDemo = {
 // Notificar el uso de ejs
 app.set('view engine', 'ejs');
 app.set('views', 'views');
+
+// Sesiones
+app.use(session({
+    secret:            'pld-sofom-secret-2024',
+    resave:            false,
+    saveUninitialized: false,
+    cookie:            { maxAge: 8 * 60 * 60 * 1000 }
+}));
 
 // Middleware para archivos
 app.use(fileUpload());
@@ -44,39 +54,39 @@ app.get('/health', (req, res) => {
 
 // rutas a clientes
 const rutasClientes = require('./routes/clientes.routes');
-app.use('/clientes', rutasClientes);
+app.use('/clientes', auth, rutasClientes);
 
 // rutas a operaciones
 const rutasOperaciones = require('./routes/operaciones.routes');
-app.use('/operaciones', rutasOperaciones);
+app.use('/operaciones', auth, rutasOperaciones);
 
 // rutas a alertas
 const rutasAlertas = require('./routes/alertas.routes');
-app.use('/alertas', rutasAlertas);
+app.use('/alertas', auth, rutasAlertas);
 
 // Rutas de contratos
 const rutasContratos = require('./routes/contratos.routes');
-app.use('/contratos', rutasContratos);
+app.use('/contratos', auth, rutasContratos);
 
 // Rutas de reportes
 const rutasReportes = require('./routes/reportes.routes');
-app.use('/reportes', rutasReportes);
+app.use('/reportes', auth, rutasReportes);
 
 // Rutas de admin
 const rutasAdmin = require('./routes/admin.routes');
-app.use('/admin', rutasAdmin);
+app.use('/admin', auth, rutasAdmin);
 
 // Rutas de reglas
 const rutasReglas = require('./routes/reglas.routes');
-app.use('/reglas', rutasReglas);
+app.use('/reglas', auth, rutasReglas);
 
 // Rutas de historial
 const rutasHistorial = require('./routes/historial.routes');
-app.use('/historial', rutasHistorial);
+app.use('/historial', auth, rutasHistorial);
 
 // Rutas de reportes internos
 const rutasReportesInternos = require('./routes/reportes_internos.routes');
-app.use('/reportes-internos', rutasReportesInternos);
+app.use('/reportes-internos', auth, rutasReportesInternos);
 
 // Rutas de login
 const rutasLogin = require('./routes/login.routes');
@@ -88,12 +98,12 @@ app.get('/', (req, res) => {
 });
 
 // Dashboard principal despues del inicio de sesion
-app.get('/dashboard', (req, res) => {
+app.get('/dashboard', auth, (req, res) => {
     res.render('dashboard');
 });
 
 // API para los contadores del dashboard
-app.get('/api/dashboard', async (req, res) => {
+app.get('/api/dashboard', auth, async (req, res) => {
     try {
         const resultadoClientes    = await modelClientes.ObtenerClientesLista();
         const resultadoOperaciones = await modelOperaciones.ObtenerOperaciones();

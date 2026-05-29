@@ -9,7 +9,7 @@ module.exports.ObtenerContratos = async (req, res) => {
     });
 };
 
-// API: devuelve contratos como JSON para el frontend
+// La api devuelve para frontend
 module.exports.ApiListaContratos = async (req, res) => {
     try {
         const { data: rows, error } = await supabase
@@ -22,7 +22,7 @@ module.exports.ApiListaContratos = async (req, res) => {
         const contratos = (rows || []).map(function(c) {
             return {
                 idContrato:  c.idcontrato,
-                cliente:     c.idcliente || '',
+                cliente:     c.nombrerazonsocial || '',
                 producto:    c.producto || '',
                 inicio:      c.fechainicio || c.fecha_inicio || '',
                 vencimiento: c.vencimiento || c.fecha_vencimiento || '',
