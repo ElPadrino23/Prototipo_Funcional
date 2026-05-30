@@ -412,36 +412,6 @@ th {
     font-size: 16px;
 }
 
-/* ── Módulos ── */
-.module-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 14px;
-    margin-bottom: 18px;
-}
-
-.module-link {
-    display: block;
-    background: white;
-    border: 1px solid var(--borde);
-    border-radius: 8px;
-    padding: 16px;
-    color: var(--texto);
-}
-
-.module-link strong {
-    display: block;
-    color: var(--azul-oscuro);
-    font-size: 16px;
-    margin-bottom: 5px;
-}
-
-.module-link span {
-    color: var(--muted);
-    font-size: 13px;
-}
-
-.module-link:hover,
 .quick-actions a:hover {
     border-color: var(--azul-principal);
     background: #f7fbff;
