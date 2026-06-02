@@ -9,8 +9,8 @@
 <main class="app-page">
     <div class="app-header">
         <div>
-            <h1 class="app-title">Buzón Interno</h1>
-            <p class="app-subtitle">Canal para reportar conductas sospechosas. Los reportes anónimos no revelan la identidad del reportante.</p>
+            <h1 class="app-title">Buzon Interno</h1>
+            <p class="app-subtitle">Los reportes no revelan la identidad </p>
         </div>
         <a href="/buzon-interno/agregar" class="btn">Nuevo reporte</a>
     </div>
@@ -34,7 +34,7 @@
             </thead>
             <tbody>
                 <% if (reportes.length === 0) { %>
-                    <tr><td colspan="7" style="color:var(--muted)">Sin reportes registrados.</td></tr>
+                    <tr><td colspan="7" style="color:var(--muted)">Sin reportes registrado</td></tr>
                 <% } %>
                 <% reportes.forEach(function(r) { %>
                     <tr>
