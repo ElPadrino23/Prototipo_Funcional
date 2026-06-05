@@ -7,7 +7,7 @@ exports.ObtenerOperaciones = async function() {
     try {
         const { data: operaciones, error } = await supabase
             .from('operacion')
-            .select('*')
+            .select('*, cliente:idcliente(nombrerazonsocial), contrato:idcontrato(idcontrato, producto)')
             .order('idoperacion', { ascending: false });
 
         if (error) throw new Error(error.message);

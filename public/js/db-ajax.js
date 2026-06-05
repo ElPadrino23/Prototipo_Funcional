@@ -94,10 +94,9 @@ async function cargarOperaciones() {
                 <td>$${money(operacion.monto)}</td>
                 <td>${operacion.moneda || ''}</td>
                 <td>${operacion.fecha || ''}</td>
-                <td><span class="badge-soft ${badgeClass(operacion.estatus)}">${operacion.estatus || ''}</span></td>
             </tr>
         `;
-    }).join('') || '<tr><td colspan="9">No hay operaciones registradas</td></tr>';
+    }).join('') || '<tr><td colspan="8">No hay operaciones registradas</td></tr>';
 }
 
 function renderAlertas(lista) {

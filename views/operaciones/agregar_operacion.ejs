@@ -15,17 +15,24 @@
         <a href="/operaciones/lista" class="btn secondary">Volver a la lista</a>
     </div>
 
-    <section class="panel" style="max-width:600px;">
+<section class="panel" style="max-width:600px;">
 
         <div class="form-grid">
 
             <div>
                 <label>Cliente</label>
-                <select id="idCliente" class="browser-default" required>
+                <select id="idCliente" class="browser-default" required onchange="filtrarContratos()">
                     <option value="">-- Seleccionar cliente --</option>
                     <% clientes.forEach(function(c) { %>
                         <option value="<%= c.idcliente %>"><%= c.nombrerazonsocial %></option>
                     <% }); %>
+                </select>
+            </div>
+
+            <div>
+                <label>Contrato</label>
+                <select id="idContrato" class="browser-default" disabled>
+                    <option value="">-- Seleccionar cliente primero --</option>
                 </select>
             </div>
 
@@ -64,14 +71,40 @@
         <button class="btn" onclick="guardarOperacion()">Registrar operacion</button>
 
     </section>
+
+    <div id="contratos-data" data-json="<%- JSON.stringify(contratos).replace(/"/g, '&quot;') %>" style="display:none"></div>
 </main>
 
 <%- include('./../scripts.ejs') %>
 <script>
+    const todosContratos = JSON.parse(document.getElementById('contratos-data').dataset.json || '[]');
     document.getElementById('fecha').value = new Date().toISOString().split('T')[0];
+
+    function filtrarContratos() {
+        const idCliente = document.getElementById('idCliente').value;
+        const select    = document.getElementById('idContrato');
+        select.innerHTML = '';
+
+        if (!idCliente) {
+            select.disabled = true;
+            select.innerHTML = '<option value="">-- Seleccionar cliente primero --</option>';
+            return;
+        }
+
+        const contratos = todosContratos.filter(c => String(c.idcliente) === String(idCliente));
+        select.disabled = false;
+        select.innerHTML = '<option value="">-- Sin contrato --</option>';
+        contratos.forEach(function(c) {
+            const opt = document.createElement('option');
+            opt.value       = c.idcontrato;
+            opt.textContent = `#${c.idcontrato} – ${c.producto}`;
+            select.appendChild(opt);
+        });
+    }
 
     async function guardarOperacion() {
         const idCliente     = document.getElementById('idCliente').value;
+        const idContrato    = document.getElementById('idContrato').value || null;
         const tipoOperacion = document.getElementById('tipoOperacion').value;
         const producto      = document.getElementById('producto').value;
         const monto         = document.getElementById('monto').value;
@@ -86,12 +119,11 @@
             const resp   = await fetch('/operaciones/agregar', {
                 method:  'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body:    JSON.stringify({ idCliente, tipoOperacion, producto, monto, fecha })
+                body:    JSON.stringify({ idCliente, idContrato, tipoOperacion, producto, monto, fecha })
             });
             const result = await resp.json();
 
             if (result.exito) {
-                alert('Operacion registrada correctamente');
                 window.location.href = '/operaciones/lista';
             } else {
                 alert('Error: ' + result.msg);

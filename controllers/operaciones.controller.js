@@ -3,6 +3,7 @@
 const modelOperaciones = require('../models/operaciones.model');
 const modelClientes    = require('../models/clientes.model');
 const modelAlertas     = require('../models/alertas.model');
+const supabase         = require('../config/supabase');
 
 // Vista lista de operaciones
 module.exports.ObtenerOperaciones = async (req, res) => {
@@ -18,14 +19,13 @@ module.exports.ApiListaOperaciones = async (req, res) => {
         const operaciones = (resultado.operaciones || []).map(function(o) {
             return {
                 idOperacion:   o.idoperacion,
-                cliente:       o.idcliente || '',
-                contrato:      o.idcontrato || '',
+                cliente:       (o.cliente && o.cliente.nombrerazonsocial) || o.idcliente || '',
+                contrato:      o.idcontrato ? `#${o.idcontrato}` : '',
                 producto:      o.producto || '',
                 tipoOperacion: o.tipooperacion || '',
                 monto:         o.monto || 0,
                 moneda:        o.moneda || 'MXN',
-                fecha:         o.fecha || '',
-                estatus:       o.estatus || ''
+                fecha:         o.fecha || ''
             };
         });
         res.json({ operaciones: operaciones });
@@ -38,8 +38,14 @@ module.exports.ApiListaOperaciones = async (req, res) => {
 module.exports.VistaAgregarOperacion = async (req, res) => {
     try {
         const resultado = await modelClientes.ObtenerClientesLista();
+        const { data: contratos } = await supabase
+            .from('contrato')
+            .select('idcontrato, idcliente, producto')
+            .eq('estatus', 'Activo')
+            .order('idcontrato');
         res.render('./operaciones/agregar_operacion', {
-            clientes: resultado.clientes || []
+            clientes:  resultado.clientes || [],
+            contratos: contratos || []
         });
     } catch (error) {
         res.status(500).send('Error: ' + error.message);
@@ -51,6 +57,7 @@ module.exports.AgregarOperacion = async (req, res) => {
     try {
         const datos = {
             idcliente:     req.body.idCliente     || req.body.idcliente,
+            idcontrato:    req.body.idContrato     || req.body.idcontrato || null,
             producto:      req.body.producto      || 'General',
             tipooperacion: req.body.tipoOperacion || req.body.tipooperacion,
             monto:         req.body.monto,

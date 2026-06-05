@@ -14,7 +14,7 @@ module.exports.ApiListaContratos = async (req, res) => {
     try {
         const { data: rows, error } = await supabase
             .from('contrato')
-            .select('*')
+            .select('*, cliente:idcliente(nombrerazonsocial)')
             .order('idcontrato', { ascending: false });
 
         if (error) throw new Error(error.message);
@@ -22,7 +22,7 @@ module.exports.ApiListaContratos = async (req, res) => {
         const contratos = (rows || []).map(function(c) {
             return {
                 idContrato:  c.idcontrato,
-                cliente:     c.nombrerazonsocial || '',
+                cliente:     (c.cliente && c.cliente.nombrerazonsocial) || '',
                 producto:    c.producto || '',
                 inicio:      c.fechainicio || c.fecha_inicio || '',
                 vencimiento: c.vencimiento || c.fecha_vencimiento || '',
