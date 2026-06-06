@@ -10,7 +10,7 @@
     <div class="app-header">
         <div>
             <h1 class="app-title">Lista PEP / Riesgo</h1>
-            <p class="app-subtitle">Personas Politicamente Expuestas y listas de riesgo para contraste automatico al registrar clientes.</p>
+            <p class="app-subtitle">Personas Políticamente Expuestas y listas de riesgo para contraste automático al registrar clientes.</p>
         </div>
         <a href="/admin/lista" class="btn secondary">Volver a usuarios</a>
     </div>
@@ -51,11 +51,11 @@
     <section class="panel">
         <table class="striped responsive-table">
             <thead>
-                <tr><th>ID</th><th>Nombre</th><th>RFC</th><th>Tipo de lista</th><th>Fecha inclusion</th><th>Acciones</th></tr>
+                <tr><th>ID</th><th>Nombre</th><th>RFC</th><th>Tipo de lista</th><th>Fecha inclusión</th><th>Acciones</th></tr>
             </thead>
             <tbody>
                 <% if (lista.length === 0) { %>
-                    <tr><td colspan="6" style="color:var(--muted)">La lista esta vacia.</td></tr>
+                    <tr><td colspan="6" style="color:var(--muted)">La lista está vacía.</td></tr>
                 <% } %>
                 <% lista.forEach(function(p) { %>
                     <tr>

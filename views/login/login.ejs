@@ -11,8 +11,13 @@
 
         <div class="demo-block">
             <span class="demo-title">Credenciales de acceso rápido</span>
-            <p><strong>Correo:</strong> <%= usuarioDemo.correo %></p>
-            <p><strong>Contraseña:</strong> <%= usuarioDemo.password %></p>
+            <% usuariosDemo.forEach(function(u) { %>
+                <p style="margin:6px 0 0; font-size:13px;">
+                    <strong style="color:var(--azul-oscuro);"><%= u.rol %></strong><br>
+                    <strong>Correo:</strong> <%= u.correo %><br>
+                    <strong>Contraseña:</strong> <%= u.password %>
+                </p>
+            <% }); %>
         </div>
     </section>
 

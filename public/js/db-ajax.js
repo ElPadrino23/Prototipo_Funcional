@@ -106,7 +106,7 @@ function renderAlertas(lista) {
     body.innerHTML = lista.map(function(alerta) {
         var acciones = '';
         if (alerta.estatus === 'Pendiente') {
-            acciones += `<button class="btn-small btn" type="button" onclick="moverEnRevision('${alerta.idAlerta}')">En revision</button> `;
+            acciones += `<button class="btn-small btn" type="button" onclick="moverEnRevision('${alerta.idAlerta}')">En revisión</button> `;
         }
         if (alerta.estatus !== 'Resuelta') {
             acciones += `<a href="/alertas/detalle?id=${alerta.idAlerta}" class="btn-small btn">Ver detalle</a>`;

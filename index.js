@@ -1,23 +1,17 @@
 // index
 
-//Librerias no tocar
 const express    = require('express');
 const bodyParser = require('body-parser');
 const path       = require('path');
 const fileUpload = require('express-fileupload');
 const session    = require('express-session');
-const auth       = require('./middleware/auth');
+const auth             = require('./middleware/auth');
+const { verificarRol } = auth;
 const app = express();
 
 const modelClientes    = require('./models/clientes.model');
 const modelOperaciones = require('./models/operaciones.model');
 const modelAlertas     = require('./models/alertas.model');
-
-// Credenciales de acceso rapido para pruebas
-const usuarioDemo = {
-    correo: 'demo@sofom.mx',
-    password: 'demo123'
-};
 
 // Notificar el uso de ejs
 app.set('view engine', 'ejs');
@@ -31,6 +25,12 @@ app.use(session({
     cookie:            { maxAge: 8 * 60 * 60 * 1000 }
 }));
 
+// Expone el usuario de sesión a todas las vistas
+app.use((req, res, next) => {
+    res.locals.usuario = req.session ? req.session.usuario : null;
+    next();
+});
+
 // Middleware para archivos
 app.use(fileUpload());
 
@@ -38,7 +38,7 @@ app.use(fileUpload());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-// jala los archivos que esten publicos
+// Archivos públicos
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Marca la ruta activa para resaltarla en la navegacion
@@ -47,63 +47,57 @@ app.use((req, res, next) => {
     next();
 });
 
-//Conocer el estado del servidor
+// Estado del servidor
 app.get('/health', (req, res) => {
     res.status(200).json({ status: 'ok' });
 });
 
-// rutas a clientes
+// Rutas protegidas por rol
+
+const OFICIAL  = 'Oficial de Cumplimiento';
+const ANALISTA = 'Analista';
+
 const rutasClientes = require('./routes/clientes.routes');
-app.use('/clientes', auth, rutasClientes);
+app.use('/clientes', auth, verificarRol(OFICIAL, ANALISTA), rutasClientes);
 
-// rutas a operaciones
 const rutasOperaciones = require('./routes/operaciones.routes');
-app.use('/operaciones', auth, rutasOperaciones);
+app.use('/operaciones', auth, verificarRol(OFICIAL, ANALISTA), rutasOperaciones);
 
-// rutas a alertas
 const rutasAlertas = require('./routes/alertas.routes');
-app.use('/alertas', auth, rutasAlertas);
+app.use('/alertas', auth, verificarRol(OFICIAL, ANALISTA), rutasAlertas);
 
-// Rutas de contratos
 const rutasContratos = require('./routes/contratos.routes');
-app.use('/contratos', auth, rutasContratos);
+app.use('/contratos', auth, verificarRol(OFICIAL, ANALISTA), rutasContratos);
 
-// Rutas de reportes
 const rutasReportes = require('./routes/reportes.routes');
-app.use('/reportes', auth, rutasReportes);
+app.use('/reportes', auth, verificarRol(OFICIAL), rutasReportes);
 
-// Rutas de admin
 const rutasAdmin = require('./routes/admin.routes');
-app.use('/admin', auth, rutasAdmin);
+app.use('/admin', auth, verificarRol(OFICIAL), rutasAdmin);
 
-// Rutas de reglas
 const rutasReglas = require('./routes/reglas.routes');
-app.use('/reglas', auth, rutasReglas);
+app.use('/reglas', auth, verificarRol(OFICIAL), rutasReglas);
 
-// Rutas de historial
 const rutasHistorial = require('./routes/historial.routes');
-app.use('/historial', auth, rutasHistorial);
+app.use('/historial', auth, verificarRol(OFICIAL), rutasHistorial);
 
-// Rutas de buzón interno
 const rutasBuzonInterno = require('./routes/buzon_interno.routes');
 app.use('/buzon-interno', auth, rutasBuzonInterno);
 
-// Rutas de login
+// Login 
+
 const rutasLogin = require('./routes/login.routes');
 app.use('/login', rutasLogin);
 
-// Ruta raiz redirige al login
-app.get('/', (req, res) => {
-    res.redirect('/login');
+app.get('/', (req, res) => res.redirect('/login'));
+
+// Dashboard 
+
+app.get('/dashboard', auth, verificarRol(OFICIAL, ANALISTA), (req, res) => {
+    res.render('dashboard', { mensaje: req.query.mensaje || null });
 });
 
-// Dashboard principal despues del inicio de sesion
-app.get('/dashboard', auth, (req, res) => {
-    res.render('dashboard');
-});
-
-// API para los contadores del dashboard
-app.get('/api/dashboard', auth, async (req, res) => {
+app.get('/api/dashboard', auth, verificarRol(OFICIAL, ANALISTA), async (req, res) => {
     try {
         const resultadoClientes    = await modelClientes.ObtenerClientesLista();
         const resultadoOperaciones = await modelOperaciones.ObtenerOperaciones();
@@ -113,17 +107,15 @@ app.get('/api/dashboard', auth, async (req, res) => {
         const operaciones = resultadoOperaciones.operaciones || [];
         const alertas     = resultadoAlertas.alertas || [];
 
-        // Ultimas 5 alertas para el dashboard
         const alertasRecientes = alertas.slice(0, 5).map(function(a) {
             return {
-                descripcion: a.regla || ('Operacion #' + (a.idoperacion || '')),
+                descripcion: a.regla || ('Operación #' + (a.idoperacion || '')),
                 nivel:       a.nivel || '',
                 estatus:     a.estatus || '',
                 fecha:       a.fecha || ''
             };
         });
 
-        // Distribucion de clientes por nivel de riesgo
         const distribucionRiesgo = ['Bajo', 'Medio', 'Alto'].map(function(nivel) {
             return {
                 nivel:    nivel,
@@ -148,29 +140,23 @@ app.get('/api/dashboard', auth, async (req, res) => {
     }
 });
 
-// Manejador de errores global
+// Manejador de errores
+
 app.use((error, req, res, next) => {
     console.error(error.message);
-
     if (req.path.includes('/api/')) {
-        res.status(503).json({
-            msg: 'No fue posible consultar la base de datos',
-            detalle: error.message
-        });
+        res.status(503).json({ msg: 'No fue posible consultar la base de datos', detalle: error.message });
         return;
     }
-
     next(error);
 });
 
-// inicia el servidor en el host 3000
+// Servidor
+
 const server = app.listen(3000, () => {
     console.log('-> http://localhost:3000');
 });
 
-// cerrar el servidor correctamente cuando se use Ctrl + C
 process.on('SIGINT', () => {
-    server.close(() => {
-        process.exit(0);
-    });
+    server.close(() => process.exit(0));
 });
