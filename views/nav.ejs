@@ -17,6 +17,9 @@
         <%/* Menú Cliente */%>
         <% if (usuario && usuario.rol === 'Cliente') { %>
 
+        <li class="<%= currentPath === '/mi-expediente' ? 'active' : '' %>">
+            <a href="/mi-expediente">Mi expediente</a>
+        </li>
         <li class="<%= currentPath.indexOf('/buzon-interno') === 0 ? 'active' : '' %>">
             <a href="/buzon-interno/lista">Buzón Interno</a>
         </li>

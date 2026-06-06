@@ -226,6 +226,50 @@ module.exports.ImportarCSV = async (req, res) => {
 };
 
 
+// Vista del expediente propio para el Cliente (busca por correo)
+module.exports.MiExpediente = async (req, res) => {
+    try {
+        const correo = req.session.usuario && req.session.usuario.correo;
+        if (!correo) return res.redirect('/login');
+
+        const { data: clientes, error } = await supabase
+            .from('cliente')
+            .select('*')
+            .eq('correoelectronico', correo)
+            .limit(1);
+
+        if (error || !clientes || clientes.length === 0) {
+            return res.render('./clientes/detalle_cliente', {
+                cliente:     null,
+                documentos:  [],
+                operaciones: [],
+                contratos:   [],
+                alertas:     [],
+                sinExpediente: true
+            });
+        }
+
+        const idCliente = clientes[0].idcliente;
+        const [resDocs, resOps, resCons, resAlertas] = await Promise.all([
+            modelClientes.ObtenerDocumentosCliente(idCliente),
+            supabase.from('operacion').select('*').eq('idcliente', idCliente).order('idoperacion', { ascending: false }),
+            supabase.from('contrato').select('*').eq('idcliente', idCliente).order('idcontrato', { ascending: false }),
+            supabase.from('alerta').select('*').eq('idcliente', idCliente).order('idalerta', { ascending: false })
+        ]);
+
+        res.render('./clientes/detalle_cliente', {
+            cliente:     clientes[0],
+            documentos:  resDocs.documentos || [],
+            operaciones: resOps.data || [],
+            contratos:   resCons.data || [],
+            alertas:     resAlertas.data || [],
+            sinExpediente: false
+        });
+    } catch (error) {
+        res.status(500).send('Error: ' + error.message);
+    }
+};
+
 // Cambiar el estado de los documentos
 module.exports.ValidarDocumento = async (req, res) => {
     try {

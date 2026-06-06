@@ -10,7 +10,7 @@
     <div class="app-header">
         <div>
             <h1 class="app-title">Buzón Interno</h1>
-            <p class="app-subtitle">Los reportes no revelan la identidad </p>
+            <p class="app-subtitle">Los reportes no revelan la identidad</p>
         </div>
         <a href="/buzon-interno/agregar" class="btn">Nuevo reporte</a>
     </div>
@@ -29,12 +29,12 @@
                     <th>Estatus</th>
                     <th>Responsable</th>
                     <th>Fecha</th>
-                    <th>Acciones</th>
+                    <% if (usuario && usuario.rol !== 'Cliente') { %><th>Acciones</th><% } %>
                 </tr>
             </thead>
             <tbody>
                 <% if (reportes.length === 0) { %>
-                    <tr><td colspan="7" style="color:var(--muted)">Sin reportes registrados</td></tr>
+                    <tr><td colspan="<%= usuario && usuario.rol !== 'Cliente' ? 7 : 6 %>" style="color:var(--muted)">Sin reportes registrados</td></tr>
                 <% } %>
                 <% reportes.forEach(function(r) { %>
                     <tr>
@@ -44,6 +44,7 @@
                         <td><span class="badge-soft badge-warn"><%= r.estatus %></span></td>
                         <td><%= r.responsable || '—' %></td>
                         <td><%= r.fecha || '—' %></td>
+                        <% if (usuario && usuario.rol !== 'Cliente') { %>
                         <td>
                             <% if (r.estatus !== 'Cerrado') { %>
                             <form action="/buzon-interno/actualizar" method="POST" style="display:flex;gap:6px;">
@@ -58,6 +59,7 @@
                             </form>
                             <% } %>
                         </td>
+                        <% } %>
                     </tr>
                 <% }); %>
             </tbody>

@@ -7,14 +7,24 @@
 <%- include('./../nav.ejs') %>
 
 <main class="app-page">
+
+    <% if (typeof sinExpediente !== 'undefined' && sinExpediente) { %>
+        <div class="app-header"><div><h1 class="app-title">Mi expediente</h1></div></div>
+        <section class="panel">
+            <p style="color:var(--muted);">No se encontró un expediente asociado a tu cuenta. Contacta al Oficial de Cumplimiento.</p>
+        </section>
+    <% } else { %>
+
     <div class="app-header">
         <div>
             <h1 class="app-title"><%= cliente.nombrerazonsocial %></h1>
             <p class="app-subtitle">RFC: <%= cliente.rfc %> &nbsp;|&nbsp; Tipo: <%= cliente.tipocliente %></p>
         </div>
         <div style="display:flex;gap:8px;">
+            <% if (usuario && usuario.rol !== 'Cliente') { %>
             <a href="/clientes/editar?id=<%= cliente.idcliente %>" class="btn secondary">Editar</a>
             <a href="/clientes/lista" class="btn secondary">Volver</a>
+            <% } %>
         </div>
     </div>
 
@@ -24,8 +34,10 @@
         <button class="tab-lite" onclick="mostrarTab('documentos')">Documentos (<%= documentos.length %>)</button>
         <button class="tab-lite" onclick="mostrarTab('operaciones')">Operaciones (<%= operaciones.length %>)</button>
         <button class="tab-lite" onclick="mostrarTab('contratos')">Contratos (<%= contratos.length %>)</button>
+        <% if (usuario && usuario.rol !== 'Cliente') { %>
         <button class="tab-lite" onclick="mostrarTab('alertas')">Alertas (<%= alertas.length %>)</button>
         <button class="tab-lite" onclick="mostrarTab('riesgo')">Perfil de riesgo</button>
+        <% } %>
     </div>
 
     <!-- Tab: Datos generales -->
@@ -149,6 +161,7 @@
         </table>
     </section>
 
+    <% if (usuario && usuario.rol !== 'Cliente') { %>
     <!-- Tab: Alertas -->
     <section class="panel" id="tab-alertas" style="display:none;">
         <h3 style="margin:0 0 16px;color:var(--azul-oscuro);font-size:16px;">Alertas</h3>
@@ -202,17 +215,20 @@
             </div>
         <% } %>
     </section>
+    <% } %>
+
+    <% } %>
 </main>
 
 <%- include('./../scripts.ejs') %>
 <script>
     function mostrarTab(nombre) {
-        var tabs = ['datos', 'documentos', 'operaciones', 'contratos', 'alertas', 'riesgo'];
-        tabs.forEach(function(t) {
-            document.getElementById('tab-' + t).style.display = t === nombre ? '' : 'none';
+        var tabs = document.querySelectorAll('[id^="tab-"]');
+        tabs.forEach(function(sec) {
+            sec.style.display = sec.id === 'tab-' + nombre ? '' : 'none';
         });
-        document.querySelectorAll('.tab-lite').forEach(function(btn, i) {
-            btn.classList.toggle('active', tabs[i] === nombre);
+        document.querySelectorAll('.tab-lite').forEach(function(btn) {
+            btn.classList.toggle('active', btn.getAttribute('onclick') === 'mostrarTab(\'' + nombre + '\')');
         });
     }
 </script>

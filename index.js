@@ -81,8 +81,11 @@ app.use('/reglas', auth, verificarRol(OFICIAL), rutasReglas);
 const rutasHistorial = require('./routes/historial.routes');
 app.use('/historial', auth, verificarRol(OFICIAL), rutasHistorial);
 
-const rutasBuzonInterno = require('./routes/buzon_interno.routes');
+const rutasBuzonInterno  = require('./routes/buzon_interno.routes');
 app.use('/buzon-interno', auth, rutasBuzonInterno);
+
+const controllerClientes = require('./controllers/clientes.controller');
+app.get('/mi-expediente', auth, controllerClientes.MiExpediente);
 
 // Login 
 

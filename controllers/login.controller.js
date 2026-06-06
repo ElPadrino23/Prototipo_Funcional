@@ -18,7 +18,7 @@ module.exports.ProcesarLogin = async (req, res) => {
 
         if (usuario) {
             req.session.usuario = usuario;
-            return res.redirect(usuario.rol === 'Cliente' ? '/buzon-interno/lista' : '/dashboard');
+            return res.redirect(usuario.rol === 'Cliente' ? '/mi-expediente' : '/dashboard');
         }
 
         res.redirect('/login?mensaje=Datos incorrectos. Verifica tu correo y contraseña.');
