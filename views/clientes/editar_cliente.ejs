@@ -22,7 +22,7 @@
 
             <div class="form-grid">
                 <div>
-                    <label for="nombre">Nombre o Razon Social</label>
+                    <label for="nombre">Nombre o Razón Social</label>
                     <input type="text" name="nombre" id="nombre" value="<%= cliente.nombrerazonsocial %>" required>
                 </div>
 
@@ -32,19 +32,19 @@
                 </div>
 
                 <div>
-                    <label for="correo">Correo electronico</label>
+                    <label for="correo">Correo electrónico</label>
                     <input type="email" name="correo" id="correo" value="<%= cliente.correoelectronico || '' %>">
                 </div>
 
                 <div>
-                    <label for="telefono">Telefono</label>
+                    <label for="telefono">Teléfono</label>
                     <input type="text" name="telefono" id="telefono" value="<%= cliente.telefono || '' %>">
                 </div>
 
                 <div>
                     <label for="tipoPersona">Tipo de persona</label>
                     <select name="tipoPersona" id="tipoPersona">
-                        <option value="Fisica" <%= (cliente.tipocliente || '').toLowerCase() === 'fisica' ? 'selected' : '' %>>Persona Fisica</option>
+                        <option value="Fisica" <%= (cliente.tipocliente || '').toLowerCase() === 'fisica' ? 'selected' : '' %>>Persona Física</option>
                         <option value="Moral"  <%= (cliente.tipocliente || '').toLowerCase() === 'moral'  ? 'selected' : '' %>>Persona Moral</option>
                     </select>
                 </div>
@@ -52,7 +52,7 @@
                 <div>
                     <label>
                         <input type="checkbox" name="esPep" value="true" <%= cliente.espep ? 'checked' : '' %>>
-                        Es Persona Expuesta Politicamente (PEP)
+                        Es Persona Expuesta Políticamente (PEP)
                     </label>
                 </div>
             </div>

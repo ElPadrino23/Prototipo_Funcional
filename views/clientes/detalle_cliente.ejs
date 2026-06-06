@@ -32,12 +32,12 @@
     <section class="panel" id="tab-datos">
         <h3 style="margin:0 0 16px;color:var(--azul-oscuro);font-size:16px;">Datos generales</h3>
         <div class="form-grid">
-            <div><label>Nombre / Razon social</label><div class="readonly-field"><%= cliente.nombrerazonsocial || '—' %></div></div>
+            <div><label>Nombre / Razón social</label><div class="readonly-field"><%= cliente.nombrerazonsocial || '—' %></div></div>
             <div><label>RFC</label><div class="readonly-field"><%= cliente.rfc || '—' %></div></div>
             <div><label>CURP</label><div class="readonly-field"><%= cliente.curp || '—' %></div></div>
             <div><label>Tipo de persona</label><div class="readonly-field"><%= cliente.tipocliente || '—' %></div></div>
             <div><label>Correo</label><div class="readonly-field"><%= cliente.correoelectronico || '—' %></div></div>
-            <div><label>Telefono</label><div class="readonly-field"><%= cliente.telefono || '—' %></div></div>
+            <div><label>Teléfono</label><div class="readonly-field"><%= cliente.telefono || '—' %></div></div>
             <div><label>Nacionalidad / Pais</label><div class="readonly-field"><%= cliente.pais || 'Mexico' %></div></div>
             <div><label>Estatus PEP</label><div class="readonly-field"><%= cliente.espep ? 'Si — PEP' : 'No' %></div></div>
         </div>
@@ -188,7 +188,7 @@
                     <% if (cliente.espep) { %><span class="badge-soft badge-danger">PEP</span><% } else { %>No<% } %>
                 </div>
             </div>
-            <div><label>Limite operativo autorizado</label>
+            <div><label>Límite operativo autorizado</label>
                 <div class="readonly-field">$<%= Number(cliente.limiteoperativoautorizado || 0).toLocaleString('es-MX') %> MXN</div>
             </div>
             <div><label>Estatus del cliente</label>

@@ -9,7 +9,7 @@
 <main class="app-page">
     <div class="app-header">
         <div>
-            <h1 class="app-title">Buzon Interno</h1>
+            <h1 class="app-title">Buzón Interno</h1>
             <p class="app-subtitle">Reporta una conducta de manera anonima</p>
         </div>
         <a href="/buzon-interno/lista" class="btn secondary">Volver</a>
@@ -19,18 +19,18 @@
         <form action="/buzon-interno/agregar" method="POST">
 
             <div style="margin-bottom:16px;">
-                <label style="display:block;margin-bottom:7px;color:var(--azul-oscuro);font-size:13px;font-weight:600;">Descripcion de la conducta sospechosa</label>
+                <label style="display:block;margin-bottom:7px;color:var(--azul-oscuro);font-size:13px;font-weight:600;">Descripción de la conducta sospechosa</label>
                 <textarea name="descripcion" rows="5" required style="width:100%;border:1px solid var(--borde);border-radius:6px;padding:10px 12px;resize:vertical;font-size:14px;"></textarea>
             </div>
 
             <div style="margin-bottom:16px;">
                 <label>
                     <input type="checkbox" name="anonimo" value="true">
-                    Se enviara de manera automatica <!-- o noooo-->
+                    Se enviará de manera automática
                 </label>
             </div>
 
-            <div class="form-actions"> <!-- Hay que corregir por que no le pusimos boton jeje-->
+            <div class="form-actions">
                 <button type="submit" class="btn">Enviar reporte</button>
             </div>
 

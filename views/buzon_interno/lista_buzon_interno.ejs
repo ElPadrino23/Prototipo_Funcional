@@ -9,7 +9,7 @@
 <main class="app-page">
     <div class="app-header">
         <div>
-            <h1 class="app-title">Buzon Interno</h1>
+            <h1 class="app-title">Buzón Interno</h1>
             <p class="app-subtitle">Los reportes no revelan la identidad </p>
         </div>
         <a href="/buzon-interno/agregar" class="btn">Nuevo reporte</a>
@@ -24,8 +24,8 @@
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Descripcion</th>
-                    <th>Anonimo</th>
+                    <th>Descripción</th>
+                    <th>Anónimo</th>
                     <th>Estatus</th>
                     <th>Responsable</th>
                     <th>Fecha</th>
@@ -34,7 +34,7 @@
             </thead>
             <tbody>
                 <% if (reportes.length === 0) { %>
-                    <tr><td colspan="7" style="color:var(--muted)">Sin reportes registrado</td></tr>
+                    <tr><td colspan="7" style="color:var(--muted)">Sin reportes registrados</td></tr>
                 <% } %>
                 <% reportes.forEach(function(r) { %>
                     <tr>
@@ -51,7 +51,7 @@
                                 <input type="text" name="responsable" placeholder="Responsable" value="<%= r.responsable || '' %>" style="border:1px solid var(--borde);border-radius:6px;padding:6px 10px;font-size:13px;width:130px;">
                                 <select name="estatus" style="border:1px solid var(--borde);border-radius:6px;padding:6px 8px;font-size:13px;">
                                     <option value="Pendiente"   <%= r.estatus === 'Pendiente'   ? 'selected' : '' %>>Pendiente</option>
-                                    <option value="En revision" <%= r.estatus === 'En revision' ? 'selected' : '' %>>En revision</option>
+                                    <option value="En revision" <%= r.estatus === 'En revision' ? 'selected' : '' %>>En revisión</option>
                                     <option value="Cerrado"     <%= r.estatus === 'Cerrado'     ? 'selected' : '' %>>Cerrado</option>
                                 </select>
                                 <button type="submit" class="btn-small btn">Guardar</button>

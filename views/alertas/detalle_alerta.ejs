@@ -21,10 +21,10 @@
 
     <!-- Datos de la alerta -->
     <section class="panel" style="margin-bottom:18px;">
-        <h3 style="margin:0 0 16px;color:var(--azul-oscuro);font-size:16px;">Informacion de la alerta</h3>
+        <h3 style="margin:0 0 16px;color:var(--azul-oscuro);font-size:16px;">Información de la alerta</h3>
         <div class="form-grid">
             <div><label>Regla disparada</label>
-                <div class="readonly-field"><%= alerta.regla || ('Operacion #' + alerta.idoperacion) %></div>
+                <div class="readonly-field"><%= alerta.regla || ('Operación #' + alerta.idoperacion) %></div>
             </div>
             <div><label>Fecha</label>
                 <div class="readonly-field"><%= alerta.fecha || '—' %></div>
@@ -72,7 +72,7 @@
     <!-- Formulario de resolucion -->
     <% if (alerta.estatus !== 'Resuelta') { %>
     <section class="panel">
-        <h3 style="margin:0 0 16px;color:var(--azul-oscuro);font-size:16px;">Dictamen y resolucion</h3>
+        <h3 style="margin:0 0 16px;color:var(--azul-oscuro);font-size:16px;">Dictamen y resolución</h3>
         <form action="/alertas/resolver-detalle" method="POST">
             <input type="hidden" name="idAlerta" value="<%= alerta.idalerta %>">
 

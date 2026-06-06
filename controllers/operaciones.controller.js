@@ -69,7 +69,7 @@ module.exports.AgregarOperacion = async (req, res) => {
 
         if (resultado.exito) {
             await modelAlertas.GenerarAlertaSiAplica(resultado.operacion);
-            res.json({ exito: true, msg: 'Operacion registrada para validacion' });
+            res.json({ exito: true, msg: 'Operación registrada para validación' });
         } else {
             res.status(400).json({ exito: false, msg: resultado.error });
         }

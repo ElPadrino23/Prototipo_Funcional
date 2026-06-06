@@ -10,15 +10,15 @@
         <h1 class="login-title">Sistema Automatizado SVA LAW</h1>
 
         <div class="demo-block">
-            <span class="demo-title">Credenciales de acceso rapido</span>
+            <span class="demo-title">Credenciales de acceso rápido</span>
             <p><strong>Correo:</strong> <%= usuarioDemo.correo %></p>
-            <p><strong>Contrasena:</strong> <%= usuarioDemo.password %></p>
+            <p><strong>Contraseña:</strong> <%= usuarioDemo.password %></p>
         </div>
     </section>
 
     <section class="login-card">
         <div class="login-card-header">
-            <div class="login-card-kicker">Inicio de sesion</div>
+            <div class="login-card-kicker">Inicio de sesión</div>
             <div class="login-brand">SVA LAW</div>
             <p class="login-help">Ingrese sus credenciales para acceder al tablero.</p>
         </div>
@@ -29,17 +29,17 @@
 
         <form action="/login" method="POST">
             <div class="login-field">
-                <label for="correo">Correo electronico</label>
+                <label for="correo">Correo electrónico</label>
                 <input type="email" name="correo" id="correo" placeholder="usuario@sofom.mx" required>
             </div>
 
             <div class="login-field">
-                <label for="password">Contrasena</label>
-                <input type="password" name="password" id="password" placeholder="Ingrese su contrasena" required>
+                <label for="password">Contraseña</label>
+                <input type="password" name="password" id="password" placeholder="Ingrese su contraseña" required>
             </div>
 
             <div class="login-actions">
-                <button type="submit" class="btn">Iniciar sesion</button>
+                <button type="submit" class="btn">Iniciar sesión</button>
             </div>
         </form>
     </section>
