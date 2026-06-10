@@ -59,7 +59,7 @@ module.exports.VistaEditarUsuario = async (req, res) => {
     try {
         const { data, error } = await supabase.from('usuario').select('*').eq('idusuario', req.query.id).single();
         if (error || !data) return res.redirect('/admin/lista');
-        res.render('./admin/editar_usuario', { usuario: data, mensaje: null });
+        res.render('./admin/editar_usuario', { usuarioEditar: data, mensaje: null });
     } catch (e) {
         res.redirect('/admin/lista');
     }
@@ -82,7 +82,7 @@ module.exports.EditarUsuario = async (req, res) => {
 
         const { data } = await supabase.from('usuario').select('*').eq('idusuario', id).single();
         return res.render('./admin/editar_usuario', {
-            usuario: data,
+            usuarioEditar: data,
             mensaje: { tipo: 'ok', texto: 'Usuario actualizado correctamente.' }
         });
     } catch (e) {
@@ -92,7 +92,7 @@ module.exports.EditarUsuario = async (req, res) => {
             if (data) usuarioActual = data;
         } catch (_) {}
         return res.render('./admin/editar_usuario', {
-            usuario: usuarioActual,
+            usuarioEditar: usuarioActual,
             mensaje: { tipo: 'error', texto: 'Error al guardar: ' + e.message }
         });
     }

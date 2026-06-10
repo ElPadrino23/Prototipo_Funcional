@@ -22,37 +22,37 @@
     <section class="panel">
         <form action="/admin/editar" method="POST">
 
-            <input type="hidden" name="idusuario" value="<%= usuario.idusuario %>">
+            <input type="hidden" name="idusuario" value="<%= usuarioEditar.idusuario %>">
 
             <div class="form-grid">
                 <div>
                     <label for="nombre">Nombre</label>
-                    <input type="text" name="nombre" id="nombre" value="<%= usuario.nombre || '' %>" required>
+                    <input type="text" name="nombre" id="nombre" value="<%= usuarioEditar.nombre || '' %>" required>
                 </div>
 
                 <div>
                     <label for="apellido">Apellido</label>
-                    <input type="text" name="apellido" id="apellido" value="<%= usuario.apellido || '' %>">
+                    <input type="text" name="apellido" id="apellido" value="<%= usuarioEditar.apellido || '' %>">
                 </div>
 
                 <div>
                     <label for="correo">Correo</label>
-                    <input type="email" name="correo" id="correo" value="<%= usuario.correo || '' %>" required>
+                    <input type="email" name="correo" id="correo" value="<%= usuarioEditar.correo || '' %>" required>
                 </div>
 
                 <div>
                     <label for="rol">Rol</label>
                     <select name="rol" id="rol" required>
-                        <option value="Analista"                <%= (usuario.rol || '') === 'Analista'                ? 'selected' : '' %>>Analista</option>
-                        <option value="Oficial de Cumplimiento" <%= (usuario.rol || '') === 'Oficial de Cumplimiento' ? 'selected' : '' %>>Oficial de Cumplimiento</option>
+                        <option value="Analista"                <%= (usuarioEditar.rol || '') === 'Analista'                ? 'selected' : '' %>>Analista</option>
+                        <option value="Oficial de Cumplimiento" <%= (usuarioEditar.rol || '') === 'Oficial de Cumplimiento' ? 'selected' : '' %>>Oficial de Cumplimiento</option>
                     </select>
                 </div>
 
                 <div>
                     <label for="estado">Estado</label>
                     <select name="estado" id="estado" required>
-                        <option value="Activo"   <%= (usuario.estado || '') === 'Activo'   ? 'selected' : '' %>>Activo</option>
-                        <option value="Inactivo" <%= (usuario.estado || '') === 'Inactivo' ? 'selected' : '' %>>Inactivo</option>
+                        <option value="Activo"   <%= (usuarioEditar.estado || '') === 'Activo'   ? 'selected' : '' %>>Activo</option>
+                        <option value="Inactivo" <%= (usuarioEditar.estado || '') === 'Inactivo' ? 'selected' : '' %>>Inactivo</option>
                     </select>
                 </div>
             </div>
