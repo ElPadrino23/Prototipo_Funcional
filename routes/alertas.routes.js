@@ -23,3 +23,5 @@ router.get('/resolver', controllerAlertas.VistaResolverAlerta);
 router.post('/resolver', controllerAlertas.ResolverAlerta);
 
 module.exports = router;
+
+

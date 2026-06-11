@@ -21,3 +21,4 @@ const verificarRol = function(...roles) {
 
 module.exports            = verificarSesion;
 module.exports.verificarRol = verificarRol;
+
