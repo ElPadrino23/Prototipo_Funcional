@@ -23,37 +23,48 @@
         <table class="striped responsive-table">
             <thead>
                 <tr>
-                    <th>ID</th>
+                    <th style="white-space:nowrap;">ID</th>
                     <th>Descripción</th>
-                    <th>Anónimo</th>
-                    <th>Estatus</th>
-                    <th>Responsable</th>
-                    <th>Fecha</th>
-                    <% if (usuario && usuario.rol !== 'Cliente') { %><th>Acciones</th><% } %>
+                    <th style="white-space:nowrap;">Anónimo</th>
+                    <th style="white-space:nowrap;">Estatus</th>
+                    <th style="white-space:nowrap;">Fecha</th>
+                    <% if (usuario && usuario.rol !== 'Cliente') { %><th style="white-space:nowrap;">Acciones</th><% } %>
                 </tr>
             </thead>
             <tbody>
                 <% if (reportes.length === 0) { %>
-                    <tr><td colspan="<%= usuario && usuario.rol !== 'Cliente' ? 7 : 6 %>" style="color:var(--muted)">Sin reportes registrados</td></tr>
+                    <tr><td colspan="<%= usuario && usuario.rol !== 'Cliente' ? 6 : 5 %>" style="color:var(--muted)">Sin reportes registrados</td></tr>
                 <% } %>
                 <% reportes.forEach(function(r) { %>
                     <tr>
                         <td><%= r.id %></td>
-                        <td><%= r.descripcion %></td>
-                        <td><%= r.anonimo ? 'Sí' : 'No' %></td>
-                        <td><span class="badge-soft badge-warn"><%= r.estatus %></span></td>
-                        <td><%= r.responsable || '—' %></td>
-                        <td><%= r.fecha || '—' %></td>
+                        <td style="min-width:240px;"><%= r.descripcion %></td>
+                        <td style="white-space:nowrap;"><%= r.anonimo ? 'Sí' : 'No' %></td>
+                        <%
+                            var estatusKey   = String(r.estatus || '').toLowerCase().replace('_', ' ');
+                            var estatusTexto = 'Pendiente';
+                            var estatusClase = 'badge-warn';
+                            if (estatusKey === 'en revision' || estatusKey === 'en investigacion') {
+                                estatusTexto = 'En revisión';
+                                estatusClase = 'badge-warn';
+                            } else if (estatusKey === 'cerrado') {
+                                estatusTexto = 'Cerrado';
+                                estatusClase = 'badge-ok';
+                            }
+                        %>
+                        <td style="white-space:nowrap;"><span class="badge-soft <%= estatusClase %>"><%= estatusTexto %></span></td>
+                        <td style="white-space:nowrap;"><%= r.fecha || '—' %></td>
                         <% if (usuario && usuario.rol !== 'Cliente') { %>
-                        <td>
-                            <% if (r.estatus !== 'Cerrado') { %>
-                            <form action="/buzon-interno/actualizar" method="POST" style="display:flex;gap:6px;">
+                        <td style="white-space:nowrap;">
+                            <% var estatusNorm = String(r.estatus || '').toLowerCase(); %>
+                            <% if (estatusNorm !== 'cerrado') { %>
+                            <form action="/buzon-interno/actualizar" method="POST" style="display:flex;align-items:center;gap:8px;">
                                 <input type="hidden" name="id" value="<%= r.id %>">
-                                <input type="text" name="responsable" placeholder="Responsable" value="<%= r.responsable || '' %>" style="border:1px solid var(--borde);border-radius:6px;padding:6px 10px;font-size:13px;width:130px;">
-                                <select name="estatus" style="border:1px solid var(--borde);border-radius:6px;padding:6px 8px;font-size:13px;">
-                                    <option value="Pendiente"   <%= r.estatus === 'Pendiente'   ? 'selected' : '' %>>Pendiente</option>
-                                    <option value="En revision" <%= r.estatus === 'En revision' ? 'selected' : '' %>>En revisión</option>
-                                    <option value="Cerrado"     <%= r.estatus === 'Cerrado'     ? 'selected' : '' %>>Cerrado</option>
+                                <input type="hidden" name="responsable" value="<%= r.responsable || '' %>">
+                                <select name="estatus" class="browser-default" style="border:1px solid var(--borde);border-radius:6px;padding:8px 10px;font-size:13px;min-height:38px;min-width:140px;width:auto;">
+                                    <option value="Pendiente"   <%= estatusNorm === 'pendiente' ? 'selected' : '' %>>Pendiente</option>
+                                    <option value="En revision" <%= (estatusNorm === 'en revision' || estatusNorm === 'en_investigacion') ? 'selected' : '' %>>En revisión</option>
+                                    <option value="Cerrado"     <%= estatusNorm === 'cerrado' ? 'selected' : '' %>>Cerrado</option>
                                 </select>
                                 <button type="submit" class="btn-small btn">Guardar</button>
                             </form>

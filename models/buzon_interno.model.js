@@ -1,12 +1,8 @@
 const supabase = require('../config/supabase');
 
-exports.ObtenerReportes = async function(idusuario) {
+exports.ObtenerReportes = async function() {
     try {
-        let query = supabase.from('reporte_interno').select('*').order('id', { ascending: false });
-
-        if (idusuario) query = query.eq('idusuario', idusuario);
-
-        const { data, error } = await query;
+        const { data, error } = await supabase.from('reporte_interno').select('*').order('id', { ascending: false });
         if (error) throw new Error(error.message);
         return { exito: true, reportes: data || [] };
     } catch (error) {
@@ -14,15 +10,14 @@ exports.ObtenerReportes = async function(idusuario) {
     }
 };
 
-exports.CrearReporte = async function(datos, idusuario) {
+exports.CrearReporte = async function(datos) {
     try {
         const { error } = await supabase.from('reporte_interno').insert([{
             descripcion: datos.descripcion,
             anonimo:     datos.anonimo === 'true' || datos.anonimo === true,
             estatus:     'Pendiente',
             responsable: null,
-            fecha:       new Date().toISOString().split('T')[0],
-            idusuario:   idusuario || null
+            fecha:       new Date().toISOString().split('T')[0]
         }]);
 
         if (error) throw new Error(error.message);

@@ -12,21 +12,27 @@
             <h1 class="app-title">Buzón Interno</h1>
             <p class="app-subtitle">Reporta una conducta de manera anónima</p>
         </div>
+        <% if (usuario && usuario.rol !== 'Cliente') { %>
         <a href="/buzon-interno/lista" class="btn secondary">Volver</a>
+        <% } %>
     </div>
+
+    <% if (mensaje) { %>
+        <div class="feedback"><%= mensaje %></div>
+    <% } %>
 
     <section class="panel">
         <form action="/buzon-interno/agregar" method="POST">
 
             <div style="margin-bottom:16px;">
                 <label style="display:block;margin-bottom:7px;color:var(--azul-oscuro);font-size:13px;font-weight:600;">Descripción de la conducta sospechosa</label>
-                <textarea name="descripcion" rows="5" required style="width:100%;border:1px solid var(--borde);border-radius:6px;padding:10px 12px;resize:vertical;font-size:14px;"></textarea>
+                <textarea name="descripcion" rows="5" required style="width:100%;border:1px solid var(--borde);border-radius:6px;padding:10px 12px;resize:vertical;font-size:14px;overflow:hidden;" oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px';"></textarea>
             </div>
 
             <div style="margin-bottom:16px;">
-                <label>
+                <label style="display:flex; align-items:center; gap:8px; margin:0; cursor:pointer;">
                     <input type="checkbox" name="anonimo" value="true">
-                    Se enviará de manera automática
+                    <span style="font-weight:400; color:var(--texto);">Se enviará de manera anónima</span>
                 </label>
             </div>
 
